@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css">
     <!-- trying to fix the mobile responsiveness by adding the following line to the css link JN -->
-    <link rel="stylesheet" href="/static/css/styles.css?v=5">
+    <link rel="stylesheet" href="/static/css/styles.css?v=6">
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
@@ -46,6 +46,31 @@
 
 <main class="admin-map-shell">
     <div id="map"></div>
+
+    <!-- Mobile: floating search card -->
+    <div class="mobile-search-overlay" id="mobile-search-overlay">
+        <div class="mobile-search-inputs">
+            <div class="mobile-search-row">
+                <span class="search-dot dot-a"></span>
+                <input type="search" class="mobile-search-input" id="mobile-from-input"
+                       placeholder="From: building, room…" autocomplete="off" />
+            </div>
+            <div class="mobile-search-line"></div>
+            <div class="mobile-search-row">
+                <span class="search-dot dot-b"></span>
+                <input type="search" class="mobile-search-input" id="mobile-to-input"
+                       placeholder="To: building, room…" autocomplete="off" />
+            </div>
+        </div>
+        <button type="button" class="mobile-go-btn" id="mobile-go-btn">Go</button>
+    </div>
+
+    <!-- Mobile: floating basemap toggle -->
+    <div class="mobile-basemap-float" id="mobile-basemap-float">
+        <button type="button" class="mbasemap-btn active" data-base-layer="paper">Paper</button>
+        <button type="button" class="mbasemap-btn" data-base-layer="satellite">Satellite</button>
+        <button type="button" class="mbasemap-btn" data-base-layer="historic">2019</button>
+    </div>
 
     <div class="sidebar" id="route-sidebar">
         <header>

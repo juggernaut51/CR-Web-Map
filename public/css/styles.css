@@ -363,7 +363,100 @@ button, .btn{
 .modal-body label{ font-weight:700; color: var(--ink); }
 .fullwidth{ width:100%; text-align:center; }
 
-/* Edited to add responsive adjustments and the floating bottom sheet for mobile JN */
+/* ===== Mobile Google-Maps-style UX ===== */
+.mobile-search-overlay,
+.mobile-basemap-float { display: none; }
+
+@media (max-width: 768px) {
+    /* Floating search card */
+    .mobile-search-overlay {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        position: fixed;
+        top: 74px;
+        left: 12px;
+        right: 12px;
+        z-index: 900;
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.18);
+        padding: 10px 10px 10px 14px;
+        border: 1px solid #e8e0db;
+    }
+    .mobile-search-inputs { flex: 1; min-width: 0; }
+    .mobile-search-row { display: flex; align-items: center; gap: 8px; }
+    .search-dot {
+        flex-shrink: 0;
+        width: 9px; height: 9px; border-radius: 50%;
+    }
+    .dot-a { background: #34a853; }
+    .dot-b { background: var(--primary-color); }
+    .mobile-search-line {
+        height: 14px; width: 1px;
+        background: #ddd;
+        margin: 3px 0 3px 12px;
+    }
+    .mobile-search-input {
+        width: 100%;
+        border: none; outline: none;
+        font-size: 14px;
+        padding: 4px 0;
+        background: transparent;
+        color: var(--ink);
+        font-family: var(--default-font-family);
+    }
+    .mobile-search-input::placeholder { color: #aaa; }
+    .mobile-go-btn {
+        flex-shrink: 0;
+        background: var(--primary-color);
+        color: #fff;
+        border: none;
+        border-radius: 12px;
+        padding: 12px 18px;
+        font-size: 15px;
+        font-weight: 700;
+        cursor: pointer;
+        font-family: var(--default-font-family);
+    }
+    .mobile-go-btn:active { filter: brightness(0.88); }
+
+    /* Floating basemap pill */
+    .mobile-basemap-float {
+        display: flex;
+        position: fixed;
+        bottom: 22px;
+        left: 12px;
+        z-index: 900;
+        background: rgba(255,255,255,0.97);
+        border-radius: 20px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.16);
+        overflow: hidden;
+        border: 1px solid #e6dad6;
+    }
+    .mbasemap-btn {
+        padding: 8px 14px;
+        border: none;
+        background: transparent;
+        color: var(--ink);
+        font-size: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        font-family: var(--default-font-family);
+        transition: 0.15s all;
+    }
+    .mbasemap-btn:not(:last-child) { border-right: 1px solid #e6dad6; }
+    .mbasemap-btn.active { background: var(--primary-color); color: #fff; }
+
+    /* Fully hide routing sidebar until search fires */
+    #route-sidebar {
+        transform: translateY(100%) !important;
+    }
+    #route-sidebar.expanded {
+        transform: translateY(0) !important;
+    }
+}
+
 /* --- MOBILE BOTTOM SHEETS (SIDEBAR & QUICK CONTROLS) --- */
 @media (max-width: 768px) {
     .hide-on-mobile { display: none !important; }

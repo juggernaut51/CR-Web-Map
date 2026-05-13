@@ -1316,6 +1316,13 @@ function notifyUser(message) {
                 mapInst.removeLayer(mapInst._buildingLabels);
             }
         }
+
+        const mobileFloat = document.getElementById('mobile-basemap-float');
+        if (mobileFloat) {
+            mobileFloat.querySelectorAll('[data-base-layer]').forEach(b => {
+                b.classList.toggle('active', b.getAttribute('data-base-layer') === name);
+            });
+        }
     }
 
     function initBugReport(mapInst) {

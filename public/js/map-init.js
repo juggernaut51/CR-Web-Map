@@ -64,4 +64,52 @@
     }
 
     setTimeout(() => { map.invalidateSize(); }, 300);
+
+    // Mobile search bar
+    const mobileGoBtn = document.getElementById('mobile-go-btn');
+    const mobileFromInput = document.getElementById('mobile-from-input');
+    const mobileToInput = document.getElementById('mobile-to-input');
+    const routeSidebar = document.getElementById('route-sidebar');
+
+    if (mobileGoBtn) {
+        const triggerMobileSearch = () => {
+            const startInput = document.getElementById('route-start-search');
+            const endInput = document.getElementById('route-end-search');
+            const searchBtn = document.getElementById('route-end-btn');
+            if (startInput) startInput.value = mobileFromInput.value;
+            if (endInput) endInput.value = mobileToInput.value;
+            if (searchBtn) searchBtn.click();
+            if (routeSidebar) routeSidebar.classList.add('expanded');
+            mobileFromInput.blur();
+            mobileToInput.blur();
+        };
+
+        mobileGoBtn.addEventListener('click', triggerMobileSearch);
+        [mobileFromInput, mobileToInput].forEach(el => {
+            if (el) el.addEventListener('keydown', e => { if (e.key === 'Enter') triggerMobileSearch(); });
+        });
+
+        const clearBtn = document.getElementById('route-clear');
+        if (clearBtn) {
+            clearBtn.addEventListener('click', () => {
+                if (routeSidebar) routeSidebar.classList.remove('expanded');
+                if (mobileFromInput) mobileFromInput.value = '';
+                if (mobileToInput) mobileToInput.value = '';
+            });
+        }
+    }
+
+    // Mobile basemap float — syncs with the drawer toggle
+    const mobileBasemapFloat = document.getElementById('mobile-basemap-float');
+    if (mobileBasemapFloat) {
+        mobileBasemapFloat.addEventListener('click', e => {
+            const btn = e.target.closest('[data-base-layer]');
+            if (!btn) return;
+            const layerName = btn.getAttribute('data-base-layer');
+            CR.setBaseLayer(map, layerName);
+            mobileBasemapFloat.querySelectorAll('.mbasemap-btn').forEach(b => {
+                b.classList.toggle('active', b === btn);
+            });
+        });
+    }
 })();
