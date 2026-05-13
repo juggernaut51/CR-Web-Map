@@ -1908,3 +1908,8 @@
     window.CR = window.CR || {};
     window.CR.bootAdmin = bootAdmin;
 })();
+
+document.addEventListener("DOMContentLoaded", function () {
+    CR.bootAdmin();
+    CR.initBugLog();
+});

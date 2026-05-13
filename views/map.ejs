@@ -188,59 +188,7 @@
 
 <footer class="toasts" id="toasts"></footer>
 
-<script>
-    (async function () {
-        const map = CR.initMap("map");
-        const [features, walkways] = await Promise.all([
-            CR.fetchFeatures(),
-            CR.fetchWalkways()
-        ]);
-
-        //updated to ignore pop ups so buildings could be clicked on for navigation JN
-        const featuresLayer = CR.createFeaturesLayer(features).addTo(map);
-        window.featuresFc = features;
-        // CR.createWalkwaysLayer(walkways).addTo(map); uncommit to add green walkways back to client side JN
-
-        if (CR.initRouting) {
-            CR.initRouting(map, walkways, featuresLayer); // Added featuresLayer here
-        }
-        
-        if (CR.initUtilityDrawer) {
-            CR.initUtilityDrawer(map);
-            CR.initBugReport(map);
-        }
-
-        //added click handlers for mobile option boxs JN
-        // 1. Sidebar Toggle
-        const sidebar = document.getElementById("route-sidebar");
-        const sidebarHeader = sidebar ? sidebar.querySelector("header") : null;
-        
-        if (sidebarHeader) {
-            sidebarHeader.addEventListener("click", (e) => {
-                e.stopPropagation(); // Stop Leaflet from stealing the click
-                sidebar.classList.toggle("expanded");
-            });
-        }
-
-        // 2. Quick Controls Toggle
-        const utilityDrawer = document.getElementById("utility-drawer");
-        const utilityHeader = utilityDrawer ? utilityDrawer.querySelector("header") : null;
-        const utilityCloseBtn = document.getElementById("utility-close");
-
-        if (utilityHeader && utilityCloseBtn) {
-            utilityHeader.addEventListener("click", (e) => {
-                e.stopPropagation();
-                // If they tap the header (but miss the actual close button), close it anyway
-                if (e.target !== utilityCloseBtn) {
-                    utilityCloseBtn.click();
-                }
-            });
-        }
-
-        // Forces Leaflet and the prefetch cache to recognize the new mobile dimensions JN
-        setTimeout(() => { map.invalidateSize(); }, 300);
-    })();
-</script>
+<script src="/static/js/map-init.js"></script>
 
 </body>
 </html>

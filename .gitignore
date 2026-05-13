@@ -10,19 +10,22 @@ yarn-error.log*
 
 # Environment variables
 .env
-#.env.local
-#.env.*.local
+.env.local
+.env.*.local
 
 # Build output
 dist/
 build/
 out/
-.idea/
 
-# System files
-.DS_Store
-Th
+# Claude Code
+.claude/
+
+# Editor / IDE
+.idea/
 .vs/
 .vscode/
 
-
+# OS files
+.DS_Store
+Thumbs.db

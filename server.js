@@ -7,6 +7,7 @@ const flash = require("connect-flash");
 const compression = require("compression");
 const helmet = require("helmet");
 const morgan = require("morgan");
+const rateLimit = require("express-rate-limit");
 const dotenv = require("dotenv");
 const { readAllFeatures, upsertFeature, deleteFeatureById } = require("./store");
 const { readAllWalkways, upsertWalkway, deleteWalkwayById } = require("./walkwayStore");
@@ -24,22 +25,18 @@ function createApp() {
 
     app.set("view engine", "ejs");
     app.set("views", path.join(__dirname, "views"));
+    app.set("trust proxy", 1);
     app.disable("etag"); // force fresh responses
 
     app.use(
         helmet({
-            //disabling hsts 
-            hsts: false,
-
-            //added the following three lines to prevent 403r openstreetmap error JN
             referrerPolicy: {
-            policy: "strict-origin-when-cross-origin",
+                policy: "strict-origin-when-cross-origin",
             },
 
             contentSecurityPolicy: {
                 useDefaults: true,
                 directives: {
-                    upgradeInsecureRequests: null,
                     "default-src": ["'self'"],
                     "img-src": [
                         "'self'",
@@ -51,9 +48,7 @@ function createApp() {
                     ],
                     "script-src": [
                         "'self'",
-                        "https://unpkg.com",
-                        "'unsafe-inline'",
-                        "'unsafe-eval'"
+                        "https://unpkg.com"
                     ],
                     "style-src": [
                     "'self'",
@@ -73,11 +68,7 @@ function createApp() {
         })
     );
     app.use(compression());
-    app.use(morgan("dev"));
-    app.use((req, res, next) => {
-        res.setHeader("Cache-Control", "no-store");
-        next();
-    });
+    app.use(morgan("combined"));
     app.use(express.json({ limit: "2mb" }));
     app.use(express.urlencoded({ extended: true }));
     app.use(
@@ -93,18 +84,34 @@ function createApp() {
             cookie: {
                 sameSite: "lax",
                 maxAge: Number(process.env.SESSION_COOKIE_MS || 1000 * 60 * 60 * 24 * 7), // default 7 days
-                httpOnly: true
-                // set secure: true when behind HTTPS/production
+                httpOnly: true,
+                secure: true
             }
         })
     );
     app.use(flash());
 
-    app.use("/static", express.static(path.join(__dirname, "public")));
+    app.use("/static", express.static(path.join(__dirname, "public"), { maxAge: "1d" }));
+
+    const loginLimiter = rateLimit({
+        windowMs: 15 * 60 * 1000,
+        max: 10,
+        standardHeaders: true,
+        legacyHeaders: false,
+        message: { error: "Too many login attempts. Please try again in 15 minutes." }
+    });
+
+    const bugLimiter = rateLimit({
+        windowMs: 60 * 1000,
+        max: 5,
+        standardHeaders: true,
+        legacyHeaders: false,
+        message: { error: "Too many bug reports submitted. Please wait before trying again." }
+    });
 
     app.get("/", handleHome);
     app.get("/admin", requireAuth, handleAdmin);
-    app.post("/login", handleLogin);
+    app.post("/login", loginLimiter, handleLogin);
     app.post("/logout", handleLogout);
 
     app.get("/api/features", apiGetFeatures);
@@ -124,10 +131,13 @@ function createApp() {
         res.json({ ok: true });
     });
 
-    app.post("/api/bugs", async (req, res) => {
+    app.post("/api/bugs", bugLimiter, async (req, res) => {
         try {
             const { description, zoom, lat, lng } = req.body;
-            const report = await insertBugReport({ description, zoom, lat, lng });
+            if (!description || typeof description !== "string" || description.trim().length === 0 || description.length > 1000) {
+                return res.status(400).json({ error: "Description must be between 1 and 1000 characters." });
+            }
+            const report = await insertBugReport({ description: description.trim(), zoom, lat, lng });
             await notifyDiscord(report);
             res.json({ ok: true });
         } catch (err) {
@@ -158,6 +168,7 @@ function createApp() {
  * @param {import('express').Response} res
  */
 function handleHome(req, res) {
+    res.setHeader("Cache-Control", "no-store");
     const messages = { success: req.flash("success"), error: req.flash("error") };
     res.render("map", { isAdmin: !!req.session.isAdmin, messages });
 }
@@ -168,6 +179,7 @@ function handleHome(req, res) {
  * @param {import('express').Response} res
  */
 function handleAdmin(req, res) {
+    res.setHeader("Cache-Control", "no-store");
     const messages = { success: req.flash("success"), error: req.flash("error") };
     res.render("admin", { isAdmin: !!req.session.isAdmin, messages });
 }

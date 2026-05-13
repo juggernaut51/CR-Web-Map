@@ -1402,17 +1402,34 @@ function notifyUser(message) {
                     body.innerHTML = "<p class='muted'>No bug reports yet.</p>";
                     return;
                 }
-                body.innerHTML = reports.map(r => `
-                    <div style="border:1px solid #2f3238; border-radius:6px; padding:0.75rem; margin-bottom:0.6rem; background:#22242a;">
-                        <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:0.5rem;">
-                            <p style="margin:0; color:#f5f5f8;">${r.description}</p>
-                            <button onclick="CR.resolveBug(${r.id}, this)" style="background:#8e001c; border:none; color:#fff; border-radius:4px; padding:0.3rem 0.6rem; cursor:pointer; white-space:nowrap; font-size:0.8rem;">Resolve</button>
-                        </div>
-                        <p style="margin:0.4rem 0 0; font-size:0.8rem; color:#9fa1a8;">
-                            📍 ${r.lat}, ${r.lng} &nbsp;|&nbsp; Zoom ${r.zoom} &nbsp;|&nbsp; ${new Date(r.reported_at).toLocaleString()}
-                        </p>
-                    </div>
-                `).join("");
+                body.innerHTML = "";
+                reports.forEach(r => {
+                    const card = document.createElement("div");
+                    card.style.cssText = "border:1px solid #2f3238; border-radius:6px; padding:0.75rem; margin-bottom:0.6rem; background:#22242a;";
+
+                    const row = document.createElement("div");
+                    row.style.cssText = "display:flex; justify-content:space-between; align-items:flex-start; gap:0.5rem;";
+
+                    const desc = document.createElement("p");
+                    desc.style.cssText = "margin:0; color:#f5f5f8;";
+                    desc.textContent = r.description;
+
+                    const btn = document.createElement("button");
+                    btn.style.cssText = "background:#8e001c; border:none; color:#fff; border-radius:4px; padding:0.3rem 0.6rem; cursor:pointer; white-space:nowrap; font-size:0.8rem;";
+                    btn.textContent = "Resolve";
+                    btn.addEventListener("click", function () { CR.resolveBug(r.id, btn); });
+
+                    row.appendChild(desc);
+                    row.appendChild(btn);
+
+                    const meta = document.createElement("p");
+                    meta.style.cssText = "margin:0.4rem 0 0; font-size:0.8rem; color:#9fa1a8;";
+                    meta.textContent = `📍 ${r.lat}, ${r.lng} | Zoom ${r.zoom} | ${new Date(r.reported_at).toLocaleString()}`;
+
+                    card.appendChild(row);
+                    card.appendChild(meta);
+                    body.appendChild(card);
+                });
             } catch {
                 body.innerHTML = "<p class='muted'>Failed to load reports.</p>";
             }
