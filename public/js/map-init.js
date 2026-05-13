@@ -105,7 +105,7 @@
             if (!dragging) return;
             dragging = false;
             if (!moved) {
-                // Tap: cycle peek → full, or full/peek → hidden
+                // Tap: toggle fully open ↔ hidden
                 const pct = sheetCurrentPct();
                 sheetSnapTo(pct > 20 ? SNAP.FULL : SNAP.HIDDEN);
                 suppressClick = true;
@@ -113,11 +113,11 @@
             }
             suppressClick = true;
             const pct = sheetCurrentPct();
-            if (velY < -0.5) { sheetSnapTo(SNAP.FULL); return; }
-            if (velY > 0.5)  { sheetSnapTo(pct < 30 ? SNAP.PEEK : SNAP.HIDDEN); return; }
-            const nearest = [SNAP.FULL, SNAP.PEEK, SNAP.HIDDEN]
-                .sort((a, b) => Math.abs(pct - a) - Math.abs(pct - b))[0];
-            sheetSnapTo(nearest);
+            // Only snap if dragged almost fully off screen
+            if (pct >= 90) { sheetSnapTo(SNAP.HIDDEN); return; }
+            // Otherwise stay exactly where the user left it
+            sidebar.style.transition = 'none';
+            sidebar.classList.toggle('expanded', pct < 5);
         });
 
         // Desktop fallback: click header to toggle
