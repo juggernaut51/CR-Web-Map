@@ -168,6 +168,28 @@ input, select{
 
 /* Color accents for map features */
 .poi{ text-shadow: 0 1px 0 rgba(255,255,255,.6); }
+
+/* Building labels on satellite view */
+.building-label {
+    background: transparent !important;
+    border: none !important;
+}
+.building-label span {
+    display: block;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    font-family: var(--default-font-family);
+    text-shadow:
+        1px  1px 2px #000,
+       -1px -1px 2px #000,
+        1px -1px 2px #000,
+       -1px  1px 2px #000;
+    white-space: nowrap;
+    pointer-events: none;
+    letter-spacing: 0.2px;
+}
 /* --- Persistent helper banner ------------------------------------------------ */
 .helper-banner{
     position:fixed; top:86px; right:18px; z-index: 600;

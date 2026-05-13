@@ -1308,6 +1308,14 @@ function notifyUser(message) {
         }
         mapInst.addLayer(store.layers[name]);
         store.current = name;
+
+        if (mapInst._buildingLabels) {
+            if (name === "satellite" || name === "historic") {
+                mapInst.addLayer(mapInst._buildingLabels);
+            } else {
+                mapInst.removeLayer(mapInst._buildingLabels);
+            }
+        }
     }
 
     function initBugReport(mapInst) {

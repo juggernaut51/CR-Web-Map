@@ -12,6 +12,25 @@
     const featuresLayer = CR.createFeaturesLayer(pointsOnly).addTo(map);
     window.featuresFc = features;
 
+    const buildingLabels = L.layerGroup();
+    features.features.forEach(f => {
+        if (!f.properties || f.properties.type !== "building") return;
+        if (!f.properties.name) return;
+        if (!f.geometry || f.geometry.type !== "Polygon") return;
+        const center = turf.centerOfMass(f);
+        const [lng, lat] = center.geometry.coordinates;
+        L.marker([lat, lng], {
+            icon: L.divIcon({
+                className: "building-label",
+                html: `<span>${f.properties.name}</span>`,
+                iconSize: [0, 0]
+            }),
+            interactive: false,
+            keyboard: false
+        }).addTo(buildingLabels);
+    });
+    map._buildingLabels = buildingLabels;
+
     if (CR.initRouting) {
         CR.initRouting(map, walkways, null);
     }
