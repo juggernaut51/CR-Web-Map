@@ -1258,6 +1258,11 @@ function notifyUser(message) {
                     window.CR.openBugReport();
                 }
             }
+            if (action === "help") {
+                if (window.CR && typeof window.CR.openWelcome === "function") {
+                    window.CR.openWelcome();
+                }
+            }
         });
 
         

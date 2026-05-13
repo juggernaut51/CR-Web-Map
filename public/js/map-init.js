@@ -99,19 +99,33 @@
         }
     }
 
-    // Welcome modal — show once per browser
+    // Welcome modal — show once per browser, reusable via CR.openWelcome
     const welcomeScrim = document.getElementById('welcome-modal-scrim');
     const welcomeBtn = document.getElementById('welcome-got-it');
-    if (welcomeScrim && welcomeBtn && !localStorage.getItem('cr_map_welcomed')) {
+
+    function openWelcome() {
+        if (!welcomeScrim) return;
+        welcomeScrim.classList.add('open');
         welcomeScrim.setAttribute('aria-hidden', 'false');
-        welcomeBtn.addEventListener('click', () => {
-            welcomeScrim.setAttribute('aria-hidden', 'true');
-            localStorage.setItem('cr_map_welcomed', '1');
-        });
+    }
+
+    function closeWelcome() {
+        if (!welcomeScrim) return;
+        welcomeScrim.classList.remove('open');
+        welcomeScrim.setAttribute('aria-hidden', 'true');
+        localStorage.setItem('cr_map_welcomed', '1');
+    }
+
+    if (welcomeBtn) welcomeBtn.addEventListener('click', closeWelcome);
+    if (welcomeScrim) {
         welcomeScrim.addEventListener('click', (e) => {
-            if (e.target === welcomeScrim) welcomeBtn.click();
+            if (e.target === welcomeScrim) closeWelcome();
         });
     }
+
+    if (!localStorage.getItem('cr_map_welcomed')) openWelcome();
+
+    CR.openWelcome = openWelcome;
 
     // Mobile basemap float — syncs with the drawer toggle
     const mobileBasemapFloat = document.getElementById('mobile-basemap-float');
