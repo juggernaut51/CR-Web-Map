@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css">
     <!-- trying to fix the mobile responsiveness by adding the following line to the css link JN -->
-    <link rel="stylesheet" href="/static/css/styles.css?v=7">
+    <link rel="stylesheet" href="/static/css/styles.css?v=8">
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
@@ -83,7 +83,7 @@
 
         <!--update the search bar JN -->
         <main>
-            <fieldset>
+            <fieldset id="sidebar-search-fieldset">
                 <legend>Search</legend>
                 <label for="route-start-search">Start (building, room, entrance)</label>
                 <input id="route-start-search" type="search" placeholder="e.g., Humanities, HU-101" autocomplete="off" style="margin-bottom: 0.6rem; width: 100%;" />
@@ -96,7 +96,7 @@
             </fieldset>
             <div class="button-row">
 
-            <fieldset>
+            <fieldset id="sidebar-pick-fieldset">
                 <legend>Pick points</legend>
                 <div class="button-row">
                     <button class="btn" id="route-set-start">Set start</button>

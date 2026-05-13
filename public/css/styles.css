@@ -565,6 +565,10 @@ button, .btn{
 
     /* Keep Leaflet controls above the peeking sidebar */
     .leaflet-bottom .leaflet-control { margin-bottom: 80px !important; }
+
+    /* Hide desktop search/pick-points UI — replaced by floating mobile search */
+    #sidebar-search-fieldset,
+    #sidebar-pick-fieldset { display: none !important; }
 }
 
 /* ===== Welcome / Onboarding Modal ===== */
