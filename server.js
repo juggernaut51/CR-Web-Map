@@ -48,7 +48,8 @@ function createApp() {
                     ],
                     "script-src": [
                         "'self'",
-                        "https://unpkg.com"
+                        "https://unpkg.com",
+                        "'unsafe-eval'"
                     ],
                     "style-src": [
                     "'self'",

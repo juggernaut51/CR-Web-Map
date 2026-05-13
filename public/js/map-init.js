@@ -5,11 +5,15 @@
         CR.fetchWalkways()
     ]);
 
-    const featuresLayer = CR.createFeaturesLayer(features).addTo(map);
+    const pointsOnly = {
+        type: "FeatureCollection",
+        features: features.features.filter(f => f.geometry && f.geometry.type === "Point")
+    };
+    const featuresLayer = CR.createFeaturesLayer(pointsOnly).addTo(map);
     window.featuresFc = features;
 
     if (CR.initRouting) {
-        CR.initRouting(map, walkways, featuresLayer);
+        CR.initRouting(map, walkways, null);
     }
 
     if (CR.initUtilityDrawer) {
