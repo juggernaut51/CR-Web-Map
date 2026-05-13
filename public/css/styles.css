@@ -569,6 +569,21 @@ button, .btn{
     /* Hide desktop search/pick-points UI — replaced by floating mobile search */
     #sidebar-search-fieldset,
     #sidebar-pick-fieldset { display: none !important; }
+
+    /* Drag handle pill */
+    .sheet-handle {
+        width: 36px;
+        height: 4px;
+        background: rgba(0,0,0,0.18);
+        border-radius: 2px;
+        margin: 0 auto 8px;
+        flex-shrink: 0;
+    }
+
+    #route-sidebar header {
+        cursor: grab;
+        user-select: none;
+    }
 }
 
 /* ===== Welcome / Onboarding Modal ===== */

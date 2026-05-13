@@ -43,10 +43,90 @@
     const sidebar = document.getElementById("route-sidebar");
     const sidebarHeader = sidebar ? sidebar.querySelector("header") : null;
 
-    if (sidebarHeader) {
-        sidebarHeader.addEventListener("click", (e) => {
+    // --- Bottom-sheet drag (mobile) + click-toggle (desktop) ---
+    const SNAP = { FULL: 0, PEEK: 55, HIDDEN: 100 };
+
+    function sheetSnapTo(pct, animate) {
+        if (!sidebar) return;
+        sidebar.style.transition = animate === false
+            ? 'none'
+            : 'transform 0.32s cubic-bezier(0.32,0.72,0,1)';
+        sidebar.style.transform = `translateY(${pct}%)`;
+        sidebar.classList.toggle('expanded', pct === SNAP.FULL);
+    }
+
+    function sheetCurrentPct() {
+        if (!sidebar) return SNAP.HIDDEN;
+        const h = sidebar.offsetHeight;
+        if (!h) return SNAP.HIDDEN;
+        const tx = new DOMMatrix(window.getComputedStyle(sidebar).transform).m42;
+        return Math.round((tx / h) * 100);
+    }
+
+    if (sidebarHeader && sidebar) {
+        // Visual drag handle pill
+        const handle = document.createElement('div');
+        handle.className = 'sheet-handle';
+        sidebarHeader.insertBefore(handle, sidebarHeader.firstChild);
+
+        let dragging = false;
+        let startY = 0;
+        let startPct = SNAP.HIDDEN;
+        let moved = false;
+        let velY = 0;
+        let prevY = 0;
+        let prevT = 0;
+        let suppressClick = false;
+
+        sidebarHeader.addEventListener('touchstart', function (e) {
+            dragging = true;
+            moved = false;
+            suppressClick = false;
+            startY = e.touches[0].clientY;
+            startPct = sheetCurrentPct();
+            prevY = startY;
+            prevT = Date.now();
+            sidebar.style.transition = 'none';
+        }, { passive: true });
+
+        window.addEventListener('touchmove', function (e) {
+            if (!dragging) return;
+            const y = e.touches[0].clientY;
+            const h = sidebar.offsetHeight;
+            const deltaPct = ((y - startY) / h) * 100;
+            const now = Date.now();
+            velY = (y - prevY) / ((now - prevT) || 1);
+            prevY = y; prevT = now;
+            if (Math.abs(y - startY) > 8) moved = true;
+            sidebar.style.transform = `translateY(${Math.max(0, Math.min(100, startPct + deltaPct))}%)`;
+        }, { passive: true });
+
+        window.addEventListener('touchend', function () {
+            if (!dragging) return;
+            dragging = false;
+            if (!moved) {
+                // Tap: cycle peek → full, or full/peek → hidden
+                const pct = sheetCurrentPct();
+                sheetSnapTo(pct > 20 ? SNAP.FULL : SNAP.HIDDEN);
+                suppressClick = true;
+                return;
+            }
+            suppressClick = true;
+            const pct = sheetCurrentPct();
+            if (velY < -0.5) { sheetSnapTo(SNAP.FULL); return; }
+            if (velY > 0.5)  { sheetSnapTo(pct < 30 ? SNAP.PEEK : SNAP.HIDDEN); return; }
+            const nearest = [SNAP.FULL, SNAP.PEEK, SNAP.HIDDEN]
+                .sort((a, b) => Math.abs(pct - a) - Math.abs(pct - b))[0];
+            sheetSnapTo(nearest);
+        });
+
+        // Desktop fallback: click header to toggle
+        sidebarHeader.addEventListener('click', function (e) {
             e.stopPropagation();
-            sidebar.classList.toggle("expanded");
+            if (suppressClick) { suppressClick = false; return; }
+            if (window.innerWidth > 768) {
+                sidebar.classList.toggle('expanded');
+            }
         });
     }
 
@@ -79,7 +159,8 @@
             if (startInput) startInput.value = mobileFromInput.value;
             if (endInput) endInput.value = mobileToInput.value;
             if (searchBtn) searchBtn.click();
-            if (routeSidebar) routeSidebar.classList.add('expanded');
+            if (typeof sheetSnapTo === 'function') sheetSnapTo(SNAP.FULL);
+            else if (routeSidebar) routeSidebar.classList.add('expanded');
             mobileFromInput.blur();
             mobileToInput.blur();
         };
@@ -92,7 +173,8 @@
         const clearBtn = document.getElementById('route-clear');
         if (clearBtn) {
             clearBtn.addEventListener('click', () => {
-                if (routeSidebar) routeSidebar.classList.remove('expanded');
+                if (typeof sheetSnapTo === 'function') sheetSnapTo(SNAP.HIDDEN);
+                else if (routeSidebar) routeSidebar.classList.remove('expanded');
                 if (mobileFromInput) mobileFromInput.value = '';
                 if (mobileToInput) mobileToInput.value = '';
             });
@@ -126,6 +208,7 @@
     if (!localStorage.getItem('cr_map_welcomed')) openWelcome();
 
     CR.openWelcome = openWelcome;
+    CR.sheetSnapTo = sheetSnapTo;
 
     // Mobile basemap float — syncs with the drawer toggle
     const mobileBasemapFloat = document.getElementById('mobile-basemap-float');

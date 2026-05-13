@@ -925,7 +925,11 @@
 
             if (window.innerWidth <= 768) {
                 const sidebar = document.getElementById("route-sidebar");
-                if (sidebar) sidebar.classList.add("expanded");
+                if (window.CR && typeof window.CR.sheetSnapTo === "function") {
+                    window.CR.sheetSnapTo(0);
+                } else if (sidebar) {
+                    sidebar.classList.add("expanded");
+                }
             }
         }
 
@@ -1005,15 +1009,15 @@
                 mapInst.closePopup();
                 mode = "start";
                 processRoutingClick(e.latlng);
-                const sidebar = document.getElementById("route-sidebar");
-                if (sidebar) sidebar.classList.add("expanded");
+                if (window.CR && typeof window.CR.sheetSnapTo === "function") window.CR.sheetSnapTo(55);
+                else { const sb = document.getElementById("route-sidebar"); if (sb) sb.classList.add("expanded"); }
             });
             L.DomEvent.on(endBtn, "click", function () {
                 mapInst.closePopup();
                 mode = "end";
                 processRoutingClick(e.latlng);
-                const sidebar = document.getElementById("route-sidebar");
-                if (sidebar) sidebar.classList.add("expanded");
+                if (window.CR && typeof window.CR.sheetSnapTo === "function") window.CR.sheetSnapTo(55);
+                else { const sb = document.getElementById("route-sidebar"); if (sb) sb.classList.add("expanded"); }
             });
         });
 
