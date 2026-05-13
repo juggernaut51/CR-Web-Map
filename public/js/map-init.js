@@ -99,6 +99,20 @@
         }
     }
 
+    // Welcome modal — show once per browser
+    const welcomeScrim = document.getElementById('welcome-modal-scrim');
+    const welcomeBtn = document.getElementById('welcome-got-it');
+    if (welcomeScrim && welcomeBtn && !localStorage.getItem('cr_map_welcomed')) {
+        welcomeScrim.setAttribute('aria-hidden', 'false');
+        welcomeBtn.addEventListener('click', () => {
+            welcomeScrim.setAttribute('aria-hidden', 'true');
+            localStorage.setItem('cr_map_welcomed', '1');
+        });
+        welcomeScrim.addEventListener('click', (e) => {
+            if (e.target === welcomeScrim) welcomeBtn.click();
+        });
+    }
+
     // Mobile basemap float — syncs with the drawer toggle
     const mobileBasemapFloat = document.getElementById('mobile-basemap-float');
     if (mobileBasemapFloat) {

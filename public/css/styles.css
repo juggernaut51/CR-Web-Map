@@ -169,6 +169,27 @@ input, select{
 /* Color accents for map features */
 .poi{ text-shadow: 0 1px 0 rgba(255,255,255,.6); }
 
+/* Long-press route popup */
+.route-context-popup .leaflet-popup-content-wrapper {
+    padding: 8px;
+    border-radius: 14px;
+    border: 1px solid #e6dad6;
+}
+.route-context-popup .leaflet-popup-content { margin: 0; }
+.route-popup {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 170px;
+}
+.route-popup .btn {
+    font-size: 13px;
+    padding: 9px 12px;
+    width: 100%;
+    text-align: left;
+    border-radius: 8px;
+}
+
 /* Building labels on satellite view */
 .building-label {
     background: transparent !important;
@@ -544,4 +565,31 @@ button, .btn{
 
     /* Keep Leaflet controls above the peeking sidebar */
     .leaflet-bottom .leaflet-control { margin-bottom: 80px !important; }
+}
+
+/* ===== Welcome / Onboarding Modal ===== */
+.welcome-modal {
+    max-width: 360px;
+}
+
+.welcome-tips {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.welcome-tips li {
+    padding: 0.6rem 0.75rem;
+    background: var(--surface-alt);
+    border-radius: 8px;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    color: var(--ink);
+}
+
+.welcome-tips li strong {
+    color: var(--primary-color);
 }

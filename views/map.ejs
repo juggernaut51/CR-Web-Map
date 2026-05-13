@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css">
     <!-- trying to fix the mobile responsiveness by adding the following line to the css link JN -->
-    <link rel="stylesheet" href="/static/css/styles.css?v=6">
+    <link rel="stylesheet" href="/static/css/styles.css?v=7">
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
@@ -207,6 +207,23 @@
             <div class="button-row">
                 <button type="button" class="btn secondary fullwidth" id="settings-placeholder">Done</button>
             </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-scrim" id="welcome-modal-scrim" aria-hidden="true">
+    <div class="modal welcome-modal" role="dialog" aria-modal="true" aria-labelledby="welcome-modal-title">
+        <header class="modal-header">
+            <h3 id="welcome-modal-title">CR Campus Map</h3>
+        </header>
+        <div class="modal-body">
+            <ul class="welcome-tips">
+                <li><strong>Search</strong> — type a building or room in the search bar to get walking directions.</li>
+                <li><strong>Long-press</strong> the map (or right-click on desktop) to drop a start or destination pin anywhere.</li>
+                <li><strong>Tap a marker</strong> to see building details.</li>
+                <li><strong>Switch views</strong> — use the Paper / Satellite / 2019 buttons to change the base map.</li>
+            </ul>
+            <button type="button" class="btn fullwidth" id="welcome-got-it">Got it</button>
         </div>
     </div>
 </div>

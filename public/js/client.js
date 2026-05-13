@@ -922,6 +922,11 @@
             }).addTo(mapInst);
 
             mapInst.fitBounds(routeLine.getBounds(), { padding: [50, 50] });
+
+            if (window.innerWidth <= 768) {
+                const sidebar = document.getElementById("route-sidebar");
+                if (sidebar) sidebar.classList.add("expanded");
+            }
         }
 
         btnStart.addEventListener("click", function () {
@@ -977,6 +982,39 @@
         mapInst.on("click", function (e) {
             if (!mode) return;
             processRoutingClick(e.latlng);
+        });
+
+        // 2. Long press / right-click → drop-pin popup (Google Maps style)
+        mapInst.on("contextmenu", function (e) {
+            const container = L.DomUtil.create("div", "route-popup");
+
+            const startBtn = L.DomUtil.create("button", "btn", container);
+            startBtn.textContent = "📍 Set as start";
+
+            const endBtn = L.DomUtil.create("button", "btn", container);
+            endBtn.textContent = "🏁 Set destination";
+            endBtn.style.background = "var(--tertiary-color)";
+            endBtn.style.borderColor = "#0e6f64";
+
+            const popup = L.popup({ closeButton: true, className: "route-context-popup" })
+                .setLatLng(e.latlng)
+                .setContent(container)
+                .openOn(mapInst);
+
+            L.DomEvent.on(startBtn, "click", function () {
+                mapInst.closePopup();
+                mode = "start";
+                processRoutingClick(e.latlng);
+                const sidebar = document.getElementById("route-sidebar");
+                if (sidebar) sidebar.classList.add("expanded");
+            });
+            L.DomEvent.on(endBtn, "click", function () {
+                mapInst.closePopup();
+                mode = "end";
+                processRoutingClick(e.latlng);
+                const sidebar = document.getElementById("route-sidebar");
+                if (sidebar) sidebar.classList.add("expanded");
+            });
         });
 
         // 2. Listen for clicks on buildings/rooms
