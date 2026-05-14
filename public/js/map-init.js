@@ -162,6 +162,11 @@
                 if (mobileToInput) mobileToInput.value = '';
             });
         }
+
+        const mobileClearBtn = document.getElementById('mobile-clear-btn');
+        if (mobileClearBtn && clearBtn) {
+            mobileClearBtn.addEventListener('click', () => clearBtn.click());
+        }
     }
 
     // Welcome modal — show once per browser, reusable via CR.openWelcome

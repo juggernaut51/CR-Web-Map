@@ -428,6 +428,14 @@ button, .btn{
         font-family: var(--default-font-family);
     }
     .mobile-search-input::placeholder { color: #aaa; }
+    .mobile-action-col {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 4px;
+        flex-shrink: 0;
+    }
+
     .mobile-go-btn {
         flex-shrink: 0;
         background: var(--primary-color);
@@ -441,6 +449,21 @@ button, .btn{
         font-family: var(--default-font-family);
     }
     .mobile-go-btn:active { filter: brightness(0.88); }
+
+    .mobile-clear-btn {
+        flex-shrink: 0;
+        background: transparent;
+        color: var(--ink-muted);
+        border: 1px solid #ccc;
+        border-radius: 12px;
+        padding: 8px 14px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        font-family: var(--default-font-family);
+        margin-top: 4px;
+    }
+    .mobile-clear-btn:active { background: #f0ece9; }
 
     /* Floating basemap pill */
     .mobile-basemap-float {

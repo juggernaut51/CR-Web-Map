@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css">
     <!-- trying to fix the mobile responsiveness by adding the following line to the css link JN -->
-    <link rel="stylesheet" href="/static/css/styles.css?v=11">
+    <link rel="stylesheet" href="/static/css/styles.css?v=12">
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
@@ -62,7 +62,10 @@
                        placeholder="To: building, room…" autocomplete="off" />
             </div>
         </div>
-        <button type="button" class="mobile-go-btn" id="mobile-go-btn">Go</button>
+        <div class="mobile-action-col">
+            <button type="button" class="mobile-go-btn" id="mobile-go-btn">Go</button>
+            <button type="button" class="mobile-clear-btn" id="mobile-clear-btn">Clear</button>
+        </div>
     </div>
 
     <!-- Mobile: floating basemap toggle -->
