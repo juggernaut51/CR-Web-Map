@@ -865,6 +865,8 @@
             if (endSearchInput) endSearchInput.value = "";
         }
 
+        CR.clearRoute = clearRoute;
+
         async function recomputeRoute() {
             if (!startCoord || !endCoord) return;
 

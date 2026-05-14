@@ -164,8 +164,14 @@
         }
 
         const mobileClearBtn = document.getElementById('mobile-clear-btn');
-        if (mobileClearBtn && clearBtn) {
-            mobileClearBtn.addEventListener('click', () => clearBtn.click());
+        if (mobileClearBtn) {
+            mobileClearBtn.addEventListener('click', () => {
+                if (window.CR && typeof window.CR.clearRoute === 'function') window.CR.clearRoute();
+                if (typeof sheetSnapTo === 'function') sheetSnapTo(SNAP.HIDDEN);
+                else if (routeSidebar) routeSidebar.classList.remove('expanded');
+                if (mobileFromInput) mobileFromInput.value = '';
+                if (mobileToInput) mobileToInput.value = '';
+            });
         }
     }
 
