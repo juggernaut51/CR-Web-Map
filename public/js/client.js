@@ -923,11 +923,13 @@
 
             mapInst.fitBounds(routeLine.getBounds(), { padding: [50, 50] });
 
-            if (window.innerWidth <= 768) {
+            if (window.innerWidth <= 900) {
                 const sidebar = document.getElementById("route-sidebar");
                 if (window.CR && typeof window.CR.sheetSnapTo === "function") {
                     window.CR.sheetSnapTo(0);
                 } else if (sidebar) {
+                    sidebar.style.removeProperty('transform');
+                    sidebar.style.removeProperty('transition');
                     sidebar.classList.add("expanded");
                 }
             }

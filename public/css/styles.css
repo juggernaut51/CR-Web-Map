@@ -469,7 +469,7 @@ button, .btn{
     .mbasemap-btn:not(:last-child) { border-right: 1px solid #e6dad6; }
     .mbasemap-btn.active { background: var(--primary-color); color: #fff; }
 
-    /* transform controlled via --sheet-ty custom property (set by JS) */
+    /* sidebar transform is driven by JS via setProperty with !important priority */
 }
 
 /* --- MOBILE BOTTOM SHEETS (SIDEBAR & QUICK CONTROLS) --- */
@@ -516,12 +516,10 @@ button, .btn{
     .sidebar {
         height: 55vh !important;
         height: 55dvh !important;
-        --sheet-ty: 100%;
-        transform: translateY(var(--sheet-ty)) !important;
-        transition: transform var(--sheet-transition, 0.3s cubic-bezier(0.4, 0, 0.2, 1)) !important;
+        transform: translateY(100%) !important;
     }
 
-    #route-sidebar.expanded { --sheet-ty: 0%; }
+    #route-sidebar.expanded { transform: translateY(0) !important; }
 
     .sidebar header {
         cursor: pointer !important;

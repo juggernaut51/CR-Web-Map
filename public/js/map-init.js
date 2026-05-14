@@ -47,11 +47,18 @@
     const SNAP = { FULL: 0, PEEK: 55, HIDDEN: 100 };
     let _sheetPct = SNAP.HIDDEN;
 
+    // Use setProperty with 'important' so inline style beats CSS !important rules
+    function sheetSetTransform(pct, animate) {
+        if (!sidebar) return;
+        const ease = 'transform 0.32s cubic-bezier(0.32,0.72,0,1)';
+        sidebar.style.setProperty('transition', animate ? ease : 'none', 'important');
+        sidebar.style.setProperty('transform', `translateY(${pct}%)`, 'important');
+    }
+
     function sheetSnapTo(pct) {
         if (!sidebar) return;
         _sheetPct = pct;
-        sidebar.style.setProperty('--sheet-transition', '0.32s cubic-bezier(0.32,0.72,0,1)');
-        sidebar.style.setProperty('--sheet-ty', `${pct}%`);
+        sheetSetTransform(pct, true);
         sidebar.classList.toggle('expanded', pct === SNAP.FULL);
     }
 
@@ -68,7 +75,7 @@
             suppressClick = false;
             startY = e.touches[0].clientY;
             startPct = _sheetPct;
-            sidebar.style.setProperty('--sheet-transition', '0s');
+            sheetSetTransform(_sheetPct, false); // disable transition for drag
         }, { passive: true });
 
         window.addEventListener('touchmove', function (e) {
@@ -78,7 +85,7 @@
             const newPct = Math.max(0, Math.min(100, startPct + ((y - startY) / h) * 100));
             if (Math.abs(y - startY) > 8) moved = true;
             _sheetPct = newPct;
-            sidebar.style.setProperty('--sheet-ty', `${newPct}%`);
+            sidebar.style.setProperty('transform', `translateY(${newPct}%)`, 'important');
             sidebar.classList.toggle('expanded', newPct < 5);
         }, { passive: true });
 
@@ -87,21 +94,22 @@
             dragging = false;
             suppressClick = true;
             if (!moved) {
-                // Tap: toggle fully open ↔ hidden
                 sheetSnapTo(_sheetPct > 20 ? SNAP.FULL : SNAP.HIDDEN);
                 return;
             }
-            // Snap to hidden if dragged almost all the way off, otherwise stay put
-            if (_sheetPct >= 90) sheetSnapTo(SNAP.HIDDEN);
+            if (_sheetPct >= 90) {
+                sheetSnapTo(SNAP.HIDDEN);
+            } else {
+                // Stay where released — restore transition for future snaps
+                sheetSetTransform(_sheetPct, true);
+            }
         });
 
-        // Desktop fallback: click header to toggle
+        // Desktop: click header to toggle
         sidebarHeader.addEventListener('click', function (e) {
             e.stopPropagation();
             if (suppressClick) { suppressClick = false; return; }
-            if (window.innerWidth > 768) {
-                sidebar.classList.toggle('expanded');
-            }
+            if (window.innerWidth > 768) sidebar.classList.toggle('expanded');
         });
     }
 
