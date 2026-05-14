@@ -45,37 +45,21 @@
 
     // --- Bottom-sheet drag (mobile) + click-toggle (desktop) ---
     const SNAP = { FULL: 0, PEEK: 55, HIDDEN: 100 };
+    let _sheetPct = SNAP.HIDDEN;
 
-    function sheetSnapTo(pct, animate) {
+    function sheetSnapTo(pct) {
         if (!sidebar) return;
-        sidebar.style.transition = animate === false
-            ? 'none'
-            : 'transform 0.32s cubic-bezier(0.32,0.72,0,1)';
-        sidebar.style.transform = `translateY(${pct}%)`;
+        _sheetPct = pct;
+        sidebar.style.setProperty('--sheet-transition', '0.32s cubic-bezier(0.32,0.72,0,1)');
+        sidebar.style.setProperty('--sheet-ty', `${pct}%`);
         sidebar.classList.toggle('expanded', pct === SNAP.FULL);
     }
 
-    function sheetCurrentPct() {
-        if (!sidebar) return SNAP.HIDDEN;
-        const h = sidebar.offsetHeight;
-        if (!h) return SNAP.HIDDEN;
-        const tx = new DOMMatrix(window.getComputedStyle(sidebar).transform).m42;
-        return Math.round((tx / h) * 100);
-    }
-
     if (sidebarHeader && sidebar) {
-        // Visual drag handle pill
-        const handle = document.createElement('div');
-        handle.className = 'sheet-handle';
-        sidebarHeader.insertBefore(handle, sidebarHeader.firstChild);
-
         let dragging = false;
         let startY = 0;
         let startPct = SNAP.HIDDEN;
         let moved = false;
-        let velY = 0;
-        let prevY = 0;
-        let prevT = 0;
         let suppressClick = false;
 
         sidebarHeader.addEventListener('touchstart', function (e) {
@@ -83,41 +67,32 @@
             moved = false;
             suppressClick = false;
             startY = e.touches[0].clientY;
-            startPct = sheetCurrentPct();
-            prevY = startY;
-            prevT = Date.now();
-            sidebar.style.transition = 'none';
+            startPct = _sheetPct;
+            sidebar.style.setProperty('--sheet-transition', '0s');
         }, { passive: true });
 
         window.addEventListener('touchmove', function (e) {
             if (!dragging) return;
             const y = e.touches[0].clientY;
-            const h = sidebar.offsetHeight;
-            const deltaPct = ((y - startY) / h) * 100;
-            const now = Date.now();
-            velY = (y - prevY) / ((now - prevT) || 1);
-            prevY = y; prevT = now;
+            const h = sidebar.offsetHeight || 1;
+            const newPct = Math.max(0, Math.min(100, startPct + ((y - startY) / h) * 100));
             if (Math.abs(y - startY) > 8) moved = true;
-            sidebar.style.transform = `translateY(${Math.max(0, Math.min(100, startPct + deltaPct))}%)`;
+            _sheetPct = newPct;
+            sidebar.style.setProperty('--sheet-ty', `${newPct}%`);
+            sidebar.classList.toggle('expanded', newPct < 5);
         }, { passive: true });
 
         window.addEventListener('touchend', function () {
             if (!dragging) return;
             dragging = false;
+            suppressClick = true;
             if (!moved) {
                 // Tap: toggle fully open ↔ hidden
-                const pct = sheetCurrentPct();
-                sheetSnapTo(pct > 20 ? SNAP.FULL : SNAP.HIDDEN);
-                suppressClick = true;
+                sheetSnapTo(_sheetPct > 20 ? SNAP.FULL : SNAP.HIDDEN);
                 return;
             }
-            suppressClick = true;
-            const pct = sheetCurrentPct();
-            // Only snap if dragged almost fully off screen
-            if (pct >= 90) { sheetSnapTo(SNAP.HIDDEN); return; }
-            // Otherwise stay exactly where the user left it
-            sidebar.style.transition = 'none';
-            sidebar.classList.toggle('expanded', pct < 5);
+            // Snap to hidden if dragged almost all the way off, otherwise stay put
+            if (_sheetPct >= 90) sheetSnapTo(SNAP.HIDDEN);
         });
 
         // Desktop fallback: click header to toggle

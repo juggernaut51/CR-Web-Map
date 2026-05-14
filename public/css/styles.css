@@ -469,13 +469,7 @@ button, .btn{
     .mbasemap-btn:not(:last-child) { border-right: 1px solid #e6dad6; }
     .mbasemap-btn.active { background: var(--primary-color); color: #fff; }
 
-    /* Fully hide routing sidebar until search fires */
-    #route-sidebar {
-        transform: translateY(100%) !important;
-    }
-    #route-sidebar.expanded {
-        transform: translateY(0) !important;
-    }
+    /* transform controlled via --sheet-ty custom property (set by JS) */
 }
 
 /* --- MOBILE BOTTOM SHEETS (SIDEBAR & QUICK CONTROLS) --- */
@@ -521,13 +515,13 @@ button, .btn{
     /* --- 1. THE ROUTING SIDEBAR --- */
     .sidebar {
         height: 55vh !important;
-        height: 55dvh !important; /* Mobile Fix */
-        transform: translateY(calc(100% - 65px)) !important;
+        height: 55dvh !important;
+        --sheet-ty: 100%;
+        transform: translateY(var(--sheet-ty)) !important;
+        transition: transform var(--sheet-transition, 0.3s cubic-bezier(0.4, 0, 0.2, 1)) !important;
     }
-    
-    #route-sidebar.expanded {
-        transform: translateY(0) !important;
-    }
+
+    #route-sidebar.expanded { --sheet-ty: 0%; }
 
     .sidebar header {
         cursor: pointer !important;
@@ -570,20 +564,7 @@ button, .btn{
     #sidebar-search-fieldset,
     #sidebar-pick-fieldset { display: none !important; }
 
-    /* Drag handle pill */
-    .sheet-handle {
-        width: 36px;
-        height: 4px;
-        background: rgba(0,0,0,0.18);
-        border-radius: 2px;
-        margin: 0 auto 8px;
-        flex-shrink: 0;
-    }
-
-    #route-sidebar header {
-        cursor: grab;
-        user-select: none;
-    }
+    #route-sidebar header { cursor: grab; user-select: none; }
 }
 
 /* ===== Welcome / Onboarding Modal ===== */
