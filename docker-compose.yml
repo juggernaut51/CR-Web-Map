@@ -17,6 +17,7 @@ services:
   app:
     build: .
     restart: unless-stopped
+    command: npm run dev
     ports:
       - "5000:5000"
     volumes:
@@ -36,6 +37,7 @@ services:
       ADMIN_PASSWORD: ${ADMIN_PASSWORD:-admin}
       POSTGRES_SSL: "false"
       SEED_FROM_JSON: "true"
+      COOKIE_SECURE: "false"
 
 volumes:
   pgdata:

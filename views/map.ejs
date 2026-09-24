@@ -9,12 +9,12 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css">
     <!-- trying to fix the mobile responsiveness by adding the following line to the css link JN -->
-    <link rel="stylesheet" href="/static/css/styles.css?v=12">
+    <link rel="stylesheet" href="/static/css/styles.css?v=<%= assetVersion %>">
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
     <script src="https://unpkg.com/@turf/turf@6.5.0/turf.min.js"></script>
-    <script src="/static/js/client.js"></script>
+    <script src="/static/js/client.js?v=<%= assetVersion %>"></script>
 </head>
 <body class="app-shell">
 <header class="appbar">
@@ -233,7 +233,7 @@
 
 <footer class="toasts" id="toasts"></footer>
 
-<script src="/static/js/map-init.js"></script>
+<script src="/static/js/map-init.js?v=<%= assetVersion %>"></script>
 
 </body>
 </html>

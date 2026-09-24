@@ -9,7 +9,7 @@
     
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css">
-    <link rel="stylesheet" href="/static/css/admin.css">
+    <link rel="stylesheet" href="/static/css/admin.css?v=<%= assetVersion %>">
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://unpkg.com/@turf/turf@6.5.0/turf.min.js"></script>
@@ -17,8 +17,8 @@
     <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
     <script src="https://unpkg.com/leaflet-path-drag@1.1.0/dist/L.Path.Drag.js"></script>
 
-    <script src="/static/js/client.js"></script>
-    <script src="/static/js/admin.js"></script>
+    <script src="/static/js/client.js?v=<%= assetVersion %>"></script>
+    <script src="/static/js/admin.js?v=<%= assetVersion %>"></script>
 </head>
 <body class="admin-shell">
 <header class="appbar">
