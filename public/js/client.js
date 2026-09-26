@@ -158,6 +158,10 @@
             headers: { "content-type": "application/json" },
             body: JSON.stringify(feature)
         });
+        if (!res.ok) {
+            const body = await res.json().catch(function () { return {}; });
+            throw new Error("Save failed (" + res.status + "): " + (body.error || res.statusText));
+        }
         return res.json();
     }
 
@@ -168,6 +172,10 @@
      */
     async function deleteFeature(id) {
         const res = await fetch("/api/features/" + id, { method: "DELETE" });
+        if (!res.ok) {
+            const body = await res.json().catch(function () { return {}; });
+            throw new Error("Delete failed (" + res.status + "): " + (body.error || res.statusText));
+        }
         return res.ok;
     }
 
@@ -322,6 +330,10 @@
             headers: { "content-type": "application/json" },
             body: JSON.stringify(feature)
         });
+        if (!res.ok) {
+            const body = await res.json().catch(function () { return {}; });
+            throw new Error("Save failed (" + res.status + "): " + (body.error || res.statusText));
+        }
         return res.json();
     }
 
@@ -332,6 +344,10 @@
      */
     async function deleteWalkway(id) {
         const res = await fetch("/api/walkways/" + id, { method: "DELETE" });
+        if (!res.ok) {
+            const body = await res.json().catch(function () { return {}; });
+            throw new Error("Delete failed (" + res.status + "): " + (body.error || res.statusText));
+        }
         return res.ok;
     }
 

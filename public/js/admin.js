@@ -70,11 +70,21 @@
             if (!currentEditLayer) return;
 
             const feature = currentEditLayer.feature;
-            feature.properties.name = inspectName.value.trim();
-            feature.properties.prefix = inspectPrefix.value.trim().toUpperCase();
-            feature.properties.number = inspectNumber.value.trim();
+            const updated = Object.assign({}, feature, {
+                properties: Object.assign({}, feature.properties, {
+                    name: inspectName.value.trim(),
+                    prefix: inspectPrefix.value.trim().toUpperCase(),
+                    number: inspectNumber.value.trim()
+                })
+            });
 
-            const saved = await CR.saveFeature(feature);
+            let saved;
+            try {
+                saved = await CR.saveFeature(updated);
+            } catch (err) {
+                showError("Could not save building", err);
+                return;
+            }
             currentEditLayer.feature = saved;
             
             // Keep master array in sync
@@ -106,7 +116,12 @@
         
                 if (geomType === "LineString") {
                     // Logic for walkways
-                    await persistEditedWalkway(map, layer, walkwayFeatures);
+                    try {
+                        await persistEditedWalkway(map, layer, walkwayFeatures);
+                    } catch (err) {
+                        restoreLayerGeometry(layer);
+                        showError("Could not save walkway", err);
+                    }
                 } else if (geomType === "Polygon" || geomType === "MultiPolygon") {
                     const updatedFeature = layer.toGeoJSON();
 
@@ -114,7 +129,14 @@
                     // Only the geometry has changed — the draw tool shouldn't touch metadata
                     updatedFeature.properties = { ...layer.feature.properties };
 
-                    const saved = await CR.saveFeature(updatedFeature);
+                    let saved;
+                    try {
+                        saved = await CR.saveFeature(updatedFeature);
+                    } catch (err) {
+                        restoreLayerGeometry(layer);
+                        showError("Could not save " + (layer.feature.properties.type || "feature"), err);
+                        return;
+                    }
                     layer.feature = saved;
 
                     const idx = allFeatures.findIndex(f => f.properties._id === saved.properties._id);
@@ -136,12 +158,24 @@
 
                 if (geomType === "LineString") {
                     // Walkway deletion
-                    await CR.deleteWalkway(id);
+                    try {
+                        await CR.deleteWalkway(id);
+                    } catch (err) {
+                        editableLayers.addLayer(layer);
+                        showError("Could not delete walkway", err);
+                        return;
+                    }
                     const idx = walkwayFeatures.findIndex(f => f.properties && f.properties._id === id);
                     if (idx >= 0) walkwayFeatures.splice(idx, 1);
                 } else {
                     // Building / room / entrance / parking deletion
-                    await CR.deleteFeature(id);
+                    try {
+                        await CR.deleteFeature(id);
+                    } catch (err) {
+                        editableLayers.addLayer(layer);
+                        showError("Could not delete " + (layer.feature.properties.type || "feature"), err);
+                        return;
+                    }
                     const idx = allFeatures.findIndex(f => f.properties && f.properties._id === id);
                     if (idx >= 0) allFeatures.splice(idx, 1);
                 }
@@ -217,6 +251,10 @@
                 }
                 deleteSelectedWalkways(walkwayLayer, multiSelection);
             }
+            if (action === "remove-stray-points") {
+                removeStrayBuildingPoints();
+                return;
+            }
             //added for network audit feature JN
             if (action === "audit-network") {
                 auditNetworkConnectivity(map, walkwayFeatures, walkwayLayer);
@@ -231,7 +269,9 @@
         let boxState = null;
         let multiSelection = new Set();
         let multiSelectMode = false;
-        let deletePolygonDraw = null;
+        let pendingDraw = null;
+        let activeDrawer = null;
+        let startingOwnDraw = false;
 
         //Joe edited
         const drawControl = new L.Control.Draw({
@@ -256,6 +296,39 @@
             }
         });
         map.addControl(drawControl);
+
+        // One handler for every finished draw, whether started by a shortcut key, a menu item or the toolbar.
+        map.on(L.Draw.Event.CREATED, async function (evt) {
+            const type = pendingDraw || { polygon: "building", polyline: "walkway", marker: "entrance" }[evt.layerType];
+            if (!type) return;
+            if (type === "erase") {
+                await deleteWalkwaysInPolygon(walkwayLayer, walkwayFeatures, evt.layer.toGeoJSON());
+                return;
+            }
+            try {
+                await handleCreated(evt.layer, type);
+            } catch (err) {
+                showError("Could not save the new " + type, err);
+            }
+            nodes = buildNodeIndex(walkwayFeatures, allFeatures);
+        });
+
+        // Fires after draw:created when a draw completes, and on its own when a draw is cancelled.
+        map.on(L.Draw.Event.DRAWSTOP, function () {
+            pendingDraw = null;
+            if (activeDrawer && !activeDrawer.enabled()) activeDrawer = null;
+        });
+
+        // A toolbar button started a draw: stop any draw started from a key or menu item.
+        map.on(L.Draw.Event.DRAWSTART, function () {
+            if (startingOwnDraw) return;
+            if (activeDrawer) {
+                const drawer = activeDrawer;
+                activeDrawer = null;
+                drawer.disable();
+            }
+            pendingDraw = null;
+        });
 
         //joe added
         // admin.js - Add these near your other map.on listeners
@@ -380,17 +453,60 @@
          * @returns {void}
          */
         function startDraw(type) {
+            stopDrawing();
             let drawer;
             if (type === "walkway") drawer = new L.Draw.Polyline(map, drawControl.options.draw.polyline);
+            else if (type === "erase")
+                drawer = new L.Draw.Polygon(map, { shapeOptions: DELETE_POLYGON_STYLE, showArea: false, allowIntersection: true });
             else if (type === "building" || type === "room" || type === "parking")
                 drawer = new L.Draw.Polygon(map, drawControl.options.draw.polygon);
             else drawer = new L.Draw.Marker(map, drawControl.options.draw.marker);
 
-            drawer.enable();
-            map.once(L.Draw.Event.CREATED, async function (evt) {
-                await handleCreated(evt.layer, type);
-                nodes = buildNodeIndex(walkwayFeatures, allFeatures);
-            });
+            pendingDraw = type;
+            activeDrawer = drawer;
+            startingOwnDraw = true;
+            try {
+                drawer.enable();
+            } finally {
+                startingOwnDraw = false;
+            }
+        }
+
+        /**
+         * Disables any active drawer, including one started from the draw toolbar.
+         * @returns {void}
+         */
+        function stopDrawing() {
+            if (activeDrawer) {
+                const drawer = activeDrawer;
+                activeDrawer = null;
+                drawer.disable();
+            }
+            const toolbar = drawControl._toolbars && drawControl._toolbars.draw;
+            if (toolbar) toolbar.disable();
+            pendingDraw = null;
+        }
+
+        /**
+         * Shows a visible error for a failed save or delete.
+         * @param {string} message
+         * @param {Error} err
+         * @returns {void}
+         */
+        function showError(message, err) {
+            alert(message + ".\n" + (err && err.message ? err.message : String(err)));
+        }
+
+        /**
+         * Puts a layer's shape back to its last saved geometry.
+         * @param {L.Layer} layer
+         * @returns {void}
+         */
+        function restoreLayerGeometry(layer) {
+            const geom = layer.feature && layer.feature.geometry;
+            if (!geom || !layer.setLatLngs) return;
+            const depth = geom.type === "LineString" ? 0 : geom.type === "Polygon" ? 1 : 2;
+            layer.setLatLngs(L.GeoJSON.coordsToLatLngs(geom.coordinates, depth));
         }
 
         /**
@@ -637,6 +753,8 @@
                 if (!f || f.geometry.type !== "LineString") continue;
                 const coords = f.geometry.coordinates || [];
                 if (coords.length <= 2) continue;
+                // Curved walkways keep their sampled points and bend data.
+                if (f.properties && f.properties.curved === true) continue;
                 const id = f.properties && f.properties._id;
                 const baseName = f.properties && f.properties.name;
                 const segs = splitIntoSegments(coords).map(function (pair, i) {
@@ -646,14 +764,19 @@
                         properties: { type: "walkway", name: baseName, curved: false, control: pair.slice(), segmented: true, segmentIndex: i }
                     };
                 });
-                for (const seg of segs) {
-                    const saved = await CR.saveWalkway(seg);
-                    store.push(saved);
-                    addAndAttachWalkway(saved);
-                }
-                if (id) {
-                    await CR.deleteWalkway(id);
-                    wl.removeLayer(layer);
+                try {
+                    for (const seg of segs) {
+                        const saved = await CR.saveWalkway(seg);
+                        store.push(saved);
+                        addAndAttachWalkway(saved);
+                    }
+                    if (id) {
+                        await CR.deleteWalkway(id);
+                        wl.removeLayer(layer);
+                    }
+                } catch (err) {
+                    showError("Could not split walkway into segments", err);
+                    return;
                 }
             }
         }
@@ -697,7 +820,14 @@
                 geometry: { type: "LineString", coordinates: newGeom },
                 properties: Object.assign({}, baseProps, props || {}, { curved: true, control: newControl, segmented: true, _id: baseProps._id })
             };
-            const saved = await CR.saveWalkway(updated);
+            let saved;
+            try {
+                saved = await CR.saveWalkway(updated);
+            } catch (err) {
+                restoreLayerGeometry(layer);
+                showError("Could not save walkway bend", err);
+                return;
+            }
             layer.feature = saved;
             layer.setLatLngs(newGeom.map(function (c) { return [c[1], c[0]]; }));
             updateWalkwayPanel(map, layer, walkwayLayer, function () {});
@@ -966,15 +1096,7 @@
          */
         function startPolygonDelete() {
             endBoxSelect();
-            if (deletePolygonDraw) deletePolygonDraw.disable();
-            deletePolygonDraw = new L.Draw.Polygon(map, { shapeOptions: DELETE_POLYGON_STYLE, showArea: false, allowIntersection: true });
-            deletePolygonDraw.enable();
-            map.once(L.Draw.Event.CREATED, async function (evt) {
-                const polyLayer = evt.layer;
-                const poly = polyLayer.toGeoJSON();
-                deleteWalkwaysInPolygon(walkwayLayer, walkwayFeatures, poly);
-                map.removeLayer(polyLayer);
-            });
+            startDraw("erase");
         }
 
         /**
@@ -997,8 +1119,19 @@
                 if (inside) toRemove.push({ layer: l, id: id });
             });
 
+            if (!toRemove.length) {
+                alert("Nothing inside that area");
+                return;
+            }
+            if (!confirm("Delete " + toRemove.length + " walkway segments? This cannot be undone.")) return;
+
             for (const item of toRemove) {
-                await CR.deleteWalkway(item.id);
+                try {
+                    await CR.deleteWalkway(item.id);
+                } catch (err) {
+                    showError("Could not delete walkway", err);
+                    break;
+                }
                 wl.removeLayer(item.layer);
                 const idx = store.findIndex(function (f) { return f.properties && f.properties._id === item.id; });
                 if (idx >= 0) store.splice(idx, 1);
@@ -1040,18 +1173,66 @@
          */
         async function deleteSelectedWalkways(wl, selection) {
             const ids = Array.from(selection);
+            if (!ids.length) return;
+            if (!confirm("Delete " + ids.length + " walkway segments? This cannot be undone.")) return;
+            const deleted = new Set();
             for (const id of ids) {
-                await CR.deleteWalkway(id);
+                try {
+                    await CR.deleteWalkway(id);
+                } catch (err) {
+                    showError("Could not delete walkway", err);
+                    break;
+                }
+                deleted.add(id);
             }
             const toRemove = [];
             wl.eachLayer(function (l) {
                 const id = l.feature && l.feature.properties && l.feature.properties._id;
-                if (id && selection.has(id)) toRemove.push(l);
+                if (id && deleted.has(id)) toRemove.push(l);
             });
             toRemove.forEach(function (l) { wl.removeLayer(l); });
-            selection.clear();
+            for (let i = walkwayFeatures.length - 1; i >= 0; i--) {
+                const f = walkwayFeatures[i];
+                if (f.properties && deleted.has(f.properties._id)) walkwayFeatures.splice(i, 1);
+            }
+            deleted.forEach(function (id) { selection.delete(id); });
             refreshSelectionStyles(wl, selection);
             updateWalkwayPanel(map, selectedWalkwayLayer || { feature: { properties: {} } }, wl, function () {});
+        }
+
+        /**
+         * Deletes building features saved as a single point, left behind by an old double-save bug.
+         * @returns {Promise<void>}
+         */
+        async function removeStrayBuildingPoints() {
+            const strays = allFeatures.filter(function (f) {
+                return f.properties && f.properties.type === "building" && f.properties._id &&
+                    f.geometry && f.geometry.type === "Point";
+            });
+            if (!strays.length) {
+                alert("No stray points found.");
+                return;
+            }
+            const names = strays.map(function (f) { return "- " + (f.properties.name || f.properties._id); }).join("\n");
+            if (!confirm("Remove " + strays.length + " stray building point(s)?\n" + names)) return;
+
+            for (const f of strays) {
+                const id = f.properties._id;
+                try {
+                    await CR.deleteFeature(id);
+                } catch (err) {
+                    showError("Could not delete stray point", err);
+                    break;
+                }
+                const idx = allFeatures.indexOf(f);
+                if (idx >= 0) allFeatures.splice(idx, 1);
+                featureLayer.eachLayer(function (fl) {
+                    if (fl.feature && fl.feature.properties && fl.feature.properties._id === id) {
+                        featureLayer.removeLayer(fl);
+                        editableLayers.removeLayer(fl);
+                    }
+                });
+            }
         }
 
         /**
