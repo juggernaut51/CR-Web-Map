@@ -365,6 +365,42 @@
         return res.ok;
     }
 
+    // Coordinates are projected at a fixed zoom so the graph doesn't depend on the current view
+    const ROUTING_PROJECT_ZOOM = 18;
+
+    function projectCoord(mapInst, c) {
+        return mapInst.project(L.latLng(c[1], c[0]), ROUTING_PROJECT_ZOOM);
+    }
+
+    /**
+     * Size in projected pixels (at ROUTING_PROJECT_ZOOM) that covers at least the given distance
+     * anywhere within the given coordinates, with a safety margin. Used as a grid cell size.
+     */
+    function metersToProjected(coords, meters) {
+        let maxAbsLat = 0;
+        coords.forEach(function (c) { maxAbsLat = Math.max(maxAbsLat, Math.abs(c[1])); });
+        const cosLat = Math.max(Math.cos(maxAbsLat * Math.PI / 180), 1e-6);
+        const pxPerMeter = 256 * Math.pow(2, ROUTING_PROJECT_ZOOM) / (2 * Math.PI * 6378137 * cosLat);
+        return meters * pxPerMeter * 2;
+    }
+
+    function coordsBBox(coords) {
+        let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+        coords.forEach(function (c) {
+            if (c[0] < minX) minX = c[0];
+            if (c[0] > maxX) maxX = c[0];
+            if (c[1] < minY) minY = c[1];
+            if (c[1] > maxY) maxY = c[1];
+        });
+        return [minX, minY, maxX, maxY];
+    }
+
+    function bboxesOverlap(a, b) {
+        return a[0] <= b[2] && b[0] <= a[2] && a[1] <= b[3] && b[1] <= a[3];
+    }
+
+    function gridKey(x, y) { return x + "," + y; }
+
     /**
      * Build a routing graph from walkway features, including intersections.
      * @param {L.Map} mapInst
@@ -408,10 +444,12 @@
             return t;
         }
 
-        // Find intersections between walkways (pairwise)
+        // Find intersections between walkways (pairwise), skipping pairs whose bounding boxes don't overlap
+        const walkwayBoxes = walkways.map(function (w) { return coordsBBox(w.coords); });
         for (let i = 0; i < walkways.length; i++) {
             const wi = walkways[i];
             for (let j = i + 1; j < walkways.length; j++) {
+                if (!bboxesOverlap(walkwayBoxes[i], walkwayBoxes[j])) continue;
                 const wj = walkways[j];
 
                 const ci = wi.coords;
@@ -420,11 +458,14 @@
                 for (let si = 0; si < ci.length - 1; si++) {
                     const Ai = ci[si];
                     const Bi = ci[si + 1];
+                    const boxI = coordsBBox([Ai, Bi]);
+                    if (!bboxesOverlap(boxI, walkwayBoxes[j])) continue;
                     const li = turf.lineString([Ai, Bi]);
 
                     for (let sj = 0; sj < cj.length - 1; sj++) {
                         const Aj = cj[sj];
                         const Bj = cj[sj + 1];
+                        if (!bboxesOverlap(boxI, coordsBBox([Aj, Bj]))) continue;
                         const lj = turf.lineString([Aj, Bj]);
 
                         const inter = turf.lineIntersect(li, lj);
@@ -531,17 +572,45 @@
      */
     function connectNearbyNodes(mapInst, nodes, adjacency, toleranceMeters) {
         const n = nodes.length;
+        if (!n) return;
+
+        // Bucket nodes into a grid with cells at least the tolerance wide, so only neighbouring cells are compared
+        const cell = metersToProjected(nodes, toleranceMeters);
+        const cells = new Array(n);
+        const grid = new Map();
         for (let i = 0; i < n; i++) {
-            for (let j = i + 1; j < n; j++) {
-                const a = nodes[i];
-                const b = nodes[j];
-                const d = mapInst.distance(L.latLng(a[1], a[0]), L.latLng(b[1], b[0]));
-                if (d <= toleranceMeters) {
-                    adjacency.get(i).push({ to: j, weight: d / 1000 });
-                    adjacency.get(j).push({ to: i, weight: d / 1000 });
+            const pt = projectCoord(mapInst, nodes[i]);
+            const cx = Math.floor(pt.x / cell);
+            const cy = Math.floor(pt.y / cell);
+            cells[i] = [cx, cy];
+            const key = gridKey(cx, cy);
+            if (!grid.has(key)) grid.set(key, []);
+            grid.get(key).push(i);
+        }
+
+        const pairs = [];
+        for (let i = 0; i < n; i++) {
+            for (let dx = -1; dx <= 1; dx++) {
+                for (let dy = -1; dy <= 1; dy++) {
+                    const list = grid.get(gridKey(cells[i][0] + dx, cells[i][1] + dy));
+                    if (!list) continue;
+                    list.forEach(function (j) {
+                        if (j <= i) return;
+                        const a = nodes[i];
+                        const b = nodes[j];
+                        const d = mapInst.distance(L.latLng(a[1], a[0]), L.latLng(b[1], b[0]));
+                        if (d <= toleranceMeters) pairs.push([i, j, d]);
+                    });
                 }
             }
         }
+
+        // Add edges in the same order as comparing every pair would
+        pairs.sort(function (p, q) { return p[0] - q[0] || p[1] - q[1]; });
+        pairs.forEach(function (p) {
+            adjacency.get(p[0]).push({ to: p[1], weight: p[2] / 1000 });
+            adjacency.get(p[1]).push({ to: p[0], weight: p[2] / 1000 });
+        });
     }
     /**
      * Snaps walkway endpoints that nearly touch a segment (but miss it) into the graph.
@@ -557,6 +626,29 @@
     function snapEndpointsToSegments(mapInst, walkways, nodes, nodeIndex, adjacency, segments, toleranceMeters) {
         const segsToCheck = segments.slice();
 
+        // Pre-project segment ends and bucket each segment into every grid cell its padded bounding box touches
+        const allCoords = [];
+        segsToCheck.forEach(function (seg) { allCoords.push(seg.coordA, seg.coordB); });
+        const cell = metersToProjected(allCoords, toleranceMeters);
+        const segPts = new Array(segsToCheck.length);
+        const grid = new Map();
+        for (let si = 0; si < segsToCheck.length; si++) {
+            const aPt = projectCoord(mapInst, segsToCheck[si].coordA);
+            const bPt = projectCoord(mapInst, segsToCheck[si].coordB);
+            segPts[si] = [aPt, bPt];
+            const x0 = Math.floor((Math.min(aPt.x, bPt.x) - cell) / cell);
+            const x1 = Math.floor((Math.max(aPt.x, bPt.x) + cell) / cell);
+            const y0 = Math.floor((Math.min(aPt.y, bPt.y) - cell) / cell);
+            const y1 = Math.floor((Math.max(aPt.y, bPt.y) + cell) / cell);
+            for (let cx = x0; cx <= x1; cx++) {
+                for (let cy = y0; cy <= y1; cy++) {
+                    const key = gridKey(cx, cy);
+                    if (!grid.has(key)) grid.set(key, []);
+                    grid.get(key).push(si);
+                }
+            }
+        }
+
         walkways.forEach(function (w) {
             const endpointCoords = [w.coords[0], w.coords[w.coords.length - 1]];
 
@@ -566,17 +658,18 @@
                 if (epNodeIdx === undefined) return;
 
                 const epLL = L.latLng(epCoord[1], epCoord[0]);
+                const ePt = mapInst.project(epLL, ROUTING_PROJECT_ZOOM);
+                // Candidates are in ascending segment order, so ties resolve as in a full scan
+                const candidates = grid.get(gridKey(Math.floor(ePt.x / cell), Math.floor(ePt.y / cell))) || [];
 
                 let best = null;
-                for (let si = 0; si < segsToCheck.length; si++) {
+                for (let ci = 0; ci < candidates.length; ci++) {
+                    const si = candidates[ci];
                     const seg = segsToCheck[si];
                     if (seg.a === epNodeIdx || seg.b === epNodeIdx) continue;
 
-                    const A = seg.coordA;
-                    const B = seg.coordB;
-                    const aPt = mapInst.project(L.latLng(A[1], A[0]));
-                    const bPt = mapInst.project(L.latLng(B[1], B[0]));
-                    const ePt = mapInst.project(epLL);
+                    const aPt = segPts[si][0];
+                    const bPt = segPts[si][1];
 
                     const vx = bPt.x - aPt.x, vy = bPt.y - aPt.y;
                     const wx = ePt.x - aPt.x, wy = ePt.y - aPt.y;
@@ -585,7 +678,7 @@
                     if (t < 0) t = 0;
                     if (t > 1) t = 1;
 
-                    const projLL = mapInst.unproject(L.point(aPt.x + t * vx, aPt.y + t * vy));
+                    const projLL = mapInst.unproject(L.point(aPt.x + t * vx, aPt.y + t * vy), ROUTING_PROJECT_ZOOM);
                     const dist = mapInst.distance(epLL, projLL);
 
                     if (dist <= toleranceMeters && (!best || dist < best.dist)) {
@@ -739,31 +832,73 @@
     }
 
     /**
-     * Dijkstra shortest path over the walkway graph.
+     * Copy a graph so points can be inserted without changing the original.
+     * Edge and segment objects are never modified in place, so they are shared.
+     * @param {{nodes:Array<[number,number]>, adjacency:Map, segments:Array}} graph
+     */
+    function cloneGraph(graph) {
+        const adjacency = new Map();
+        graph.adjacency.forEach(function (edges, idx) { adjacency.set(idx, edges.slice()); });
+        return { nodes: graph.nodes.slice(), adjacency: adjacency, segments: graph.segments.slice() };
+    }
+
+    /**
+     * Dijkstra shortest path over the walkway graph from any of the start nodes to the nearest of the end nodes.
      * @param {{nodes:Array<[number,number]>, adjacency:Map<number,Array<{to:number,weight:number}>>}} graph
-     * @param {number} startIndex
-     * @param {number} endIndex
+     * @param {Array<number>} startIndices
+     * @param {Array<number>} endIndices
      * @returns {{distanceKm:number, path:Array<number>}|null}
      */
-    function dijkstraShortestPath(graph, startIndex, endIndex) {
+    function dijkstraShortestPath(graph, startIndices, endIndices) {
         const n = graph.nodes.length;
         const dist = new Array(n).fill(Infinity);
         const prev = new Array(n).fill(null);
         const visited = new Array(n).fill(false);
+        const isEnd = new Array(n).fill(false);
+        endIndices.forEach(function (idx) { isEnd[idx] = true; });
 
-        dist[startIndex] = 0;
-
-        while (true) {
-            let u = -1;
-            let best = Infinity;
-            for (let i = 0; i < n; i++) {
-                if (!visited[i] && dist[i] < best) {
-                    best = dist[i];
-                    u = i;
+        // Binary min-heap of [distance, node]; stale entries are skipped when popped
+        const heap = [];
+        function heapPush(item) {
+            heap.push(item);
+            let i = heap.length - 1;
+            while (i > 0) {
+                const parent = (i - 1) >> 1;
+                if (heap[parent][0] <= heap[i][0]) break;
+                const tmp = heap[parent]; heap[parent] = heap[i]; heap[i] = tmp;
+                i = parent;
+            }
+        }
+        function heapPop() {
+            const top = heap[0];
+            const last = heap.pop();
+            if (heap.length) {
+                heap[0] = last;
+                let i = 0;
+                while (true) {
+                    const l = 2 * i + 1, r = l + 1;
+                    let m = i;
+                    if (l < heap.length && heap[l][0] < heap[m][0]) m = l;
+                    if (r < heap.length && heap[r][0] < heap[m][0]) m = r;
+                    if (m === i) break;
+                    const tmp = heap[m]; heap[m] = heap[i]; heap[i] = tmp;
+                    i = m;
                 }
             }
-            if (u === -1) break;
-            if (u === endIndex) break;
+            return top;
+        }
+
+        startIndices.forEach(function (idx) {
+            if (dist[idx] === 0) return;
+            dist[idx] = 0;
+            heapPush([0, idx]);
+        });
+
+        let endIndex = -1;
+        while (heap.length) {
+            const u = heapPop()[1];
+            if (visited[u]) continue;
+            if (isEnd[u]) { endIndex = u; break; }
 
             visited[u] = true;
             const edges = graph.adjacency.get(u) || [];
@@ -773,11 +908,12 @@
                 if (alt < dist[v]) {
                     dist[v] = alt;
                     prev[v] = u;
+                    heapPush([alt, v]);
                 }
             }
         }
 
-        if (!isFinite(dist[endIndex])) return null;
+        if (endIndex === -1) return null;
 
         const path = [];
         let cur = endIndex;
@@ -818,6 +954,14 @@
         let endCoord = null;
         let startSnapDist = null;
         let endSnapDist = null;
+        let startName = null;
+        let endName = null;
+        // Candidate points for each end (e.g. every entrance of a building); the route picks the best pair
+        let startOptions = null;
+        let endOptions = null;
+        // Start search text last looked up, so an edited field is looked up again
+        let lastStartQuery = null;
+        let baseGraph = null;
         let featureIndex = null;
         let startMarker = null;
         let endMarker = null;
@@ -860,9 +1004,16 @@
             return steps;
         }        
 
-        function formatLabel(coord, dist) {
+        // Walkways don't change on the public map, so the graph is built once and copied for each route
+        function getBaseGraph() {
+            if (!baseGraph) baseGraph = buildWalkwayGraph(mapInst, walkwaysFc);
+            return baseGraph;
+        }
+
+        function formatLabel(coord, dist, name) {
             if (!coord) return "--";
-            const text = coord[1].toFixed(5) + ", " + coord[0].toFixed(5);
+            let text = coord[1].toFixed(5) + ", " + coord[0].toFixed(5);
+            if (name) text = name + " (" + text + ")";
             if (typeof dist === "number") {
                 return text + " (snapped " + Math.round(dist) + " m)";
             }
@@ -870,8 +1021,8 @@
         }
 
         function updateLabels() {
-            startLabel.textContent = "Start: " + formatLabel(startCoord, startSnapDist);
-            endLabel.textContent = "End: " + formatLabel(endCoord, endSnapDist);
+            startLabel.textContent = "Start: " + formatLabel(startCoord, startSnapDist, startName);
+            endLabel.textContent = "End: " + formatLabel(endCoord, endSnapDist, endName);
         }
 
         function clearRoute() {
@@ -879,6 +1030,11 @@
             endCoord = null;
             startSnapDist = null;
             endSnapDist = null;
+            startName = null;
+            endName = null;
+            startOptions = null;
+            endOptions = null;
+            lastStartQuery = null;
             if (startMarker) mapInst.removeLayer(startMarker);
             if (endMarker) mapInst.removeLayer(endMarker);
             if (routeLine) mapInst.removeLayer(routeLine);
@@ -897,28 +1053,65 @@
 
         CR.clearRoute = clearRoute;
 
-        async function recomputeRoute() {
-            if (!startCoord || !endCoord) return;
+        // Point the start or end at one of its candidates
+        function setEndpoint(role, option) {
+            const latlng = L.latLng(option.coord[1], option.coord[0]);
+            if (role === "start") {
+                startCoord = option.coord;
+                startSnapDist = option.distMeters;
+                startName = option.name;
+                if (!startMarker) startMarker = L.marker(latlng, { draggable: false }).addTo(mapInst);
+                else startMarker.setLatLng(latlng);
+            } else {
+                endCoord = option.coord;
+                endSnapDist = option.distMeters;
+                endName = option.name;
+                if (!endMarker) endMarker = L.marker(latlng, { draggable: false }).addTo(mapInst);
+                else endMarker.setLatLng(latlng);
+            }
+        }
 
-            const graph = buildWalkwayGraph(mapInst, walkwaysFc);
+        async function recomputeRoute() {
+            if (!startOptions || !endOptions) return;
+
+            const graph = cloneGraph(getBaseGraph());
             if (!graph.nodes.length) {
                 distanceLabel.textContent = "Distance: (no walkways)";
                 return;
             }
 
-            const startInfo = insertPointIntoGraph(mapInst, graph, startCoord, MAX_SNAP_METERS);
-            const endInfo = insertPointIntoGraph(mapInst, graph, endCoord, MAX_SNAP_METERS);
-            if (!startInfo || !endInfo) {
+            function insertOptions(options) {
+                const inserted = [];
+                options.forEach(function (option) {
+                    const info = insertPointIntoGraph(mapInst, graph, option.coord, MAX_SNAP_METERS);
+                    if (info) inserted.push({ nodeIndex: info.nodeIndex, option: option });
+                });
+                return inserted;
+            }
+            const starts = insertOptions(startOptions);
+            const ends = insertOptions(endOptions);
+            if (!starts.length || !ends.length) {
                 distanceLabel.textContent = "Distance: (click closer to a walkway)";
                 return;
             }
 
-            const result = dijkstraShortestPath(graph, startInfo.nodeIndex, endInfo.nodeIndex);
+            const result = dijkstraShortestPath(
+                graph,
+                starts.map(function (s) { return s.nodeIndex; }),
+                ends.map(function (e) { return e.nodeIndex; })
+            );
             if (!result) {
                 distanceLabel.textContent = "Distance: (no path)";
                 if (routeLine) mapInst.removeLayer(routeLine);
                 return;
             }
+
+            // Move the markers to the candidates the route actually uses
+            const firstNode = result.path[0];
+            const lastNode = result.path[result.path.length - 1];
+            setEndpoint("start", starts.find(function (s) { return s.nodeIndex === firstNode; }).option);
+            setEndpoint("end", ends.find(function (e) { return e.nodeIndex === lastNode; }).option);
+            updateLabels();
 
             const coords = result.path.map(function (idx) {
                 const c = graph.nodes[idx];
@@ -991,29 +1184,19 @@
                 return;
             }
 
-            const snappedLatLng = L.latLng(snapped.coord[1], snapped.coord[0]);
+            const option = { coord: snapped.coord, distMeters: snapped.distMeters, name: null };
 
             if (mode === "start") {
-                startCoord = snapped.coord;
-                startSnapDist = snapped.distMeters;
-                if (!startMarker) {
-                    startMarker = L.marker(snappedLatLng, { draggable: false }).addTo(mapInst);
-                } else {
-                    startMarker.setLatLng(snappedLatLng);
-                }
+                startOptions = [option];
+                setEndpoint("start", option);
             } else if (mode === "end") {
-                endCoord = snapped.coord;
-                endSnapDist = snapped.distMeters;
-                if (!endMarker) {
-                    endMarker = L.marker(snappedLatLng, { draggable: false }).addTo(mapInst);
-                } else {
-                    endMarker.setLatLng(snappedLatLng);
-                }
+                endOptions = [option];
+                setEndpoint("end", option);
             }
 
             mode = null;
             updateLabels();
-            recomputeRoute();
+            safeRecompute();
         }
 
         // 1. Listen for clicks on empty map areas
@@ -1093,36 +1276,38 @@
             return items;
         }
 
-        function resolveFeatureToCoord(item, role) {
-            if (!item || !item.raw || !item.raw.geometry) return null;
+        // Returns every candidate point for a feature: all entrances of a building or room, otherwise one point
+        function resolveFeatureToCoords(item, role) {
+            if (!item || !item.raw || !item.raw.geometry) return [];
             const p = item.raw.properties || {};
             const geom = item.raw.geometry;
 
             if (p.type === "entrance") {
-                return { coord: geom.coordinates, label: p.name || "Entrance" };
+                return [{ coord: geom.coordinates, label: p.name || "Entrance" }];
             }
 
-            // If it's a room or building, try to find an entrance first
+            // If it's a room or building, use its entrances; routing picks the one giving the shortest path
             const targetId = p.buildingId || p._id || item.id;
             const entrances = featureIndex.filter(x => x.type === "entrance" && x.buildingId === targetId);
             
             if (entrances.length) {
-                const nearest = entrances[0];
-                return { coord: nearest.raw.geometry.coordinates, label: nearest.name || "Entrance" };
+                return entrances.map(function (e) {
+                    return { coord: e.raw.geometry.coordinates, label: e.name || "Entrance" };
+                });
             }
 
             // Reliable fallback for Polygons and MultiPolygons
             if (geom.type === "Polygon" || geom.type === "MultiPolygon") {
                 const center = turf.centerOfMass(item.raw);
-                return { coord: center.geometry.coordinates, label: p.name || "Building" };
+                return [{ coord: center.geometry.coordinates, label: p.name || "Building" }];
             }
 
             // Fallback for Points
             if (geom.type === "Point") {
-                return { coord: geom.coordinates, label: p.name || role };
+                return [{ coord: geom.coordinates, label: p.name || role }];
             }
 
-            return null;
+            return [];
         }
 
 function notifyUser(message) {
@@ -1156,33 +1341,31 @@ function notifyUser(message) {
                 return null; 
             }
             
-            const resolved = resolveFeatureToCoord(matches[0], role);
-            if (!resolved) {
+            const resolved = resolveFeatureToCoords(matches[0], role);
+            if (!resolved.length) {
                 notifyUser(`Unable to find map coordinates for "${q}"`);
                 return null;
             }
             
-            const snapped = snapToWalkways(mapInst, walkwaysFc, resolved.coord, MAX_SNAP_METERS);
-            if (!snapped) {
+            const options = [];
+            resolved.forEach(function (r) {
+                const snapped = snapToWalkways(mapInst, walkwaysFc, r.coord, MAX_SNAP_METERS);
+                if (snapped) options.push({ coord: snapped.coord, distMeters: snapped.distMeters, name: r.label });
+            });
+            if (!options.length) {
                 notifyUser(`"${q}" is too far from a known path.`);
                 return null;
             }
-            
-            const latlng = L.latLng(snapped.coord[1], snapped.coord[0]);
 
             if (role === "start") {
-                startCoord = snapped.coord;
-                startSnapDist = snapped.distMeters;
-                if (!startMarker) startMarker = L.marker(latlng, { draggable: false }).addTo(mapInst);
-                else startMarker.setLatLng(latlng);
+                startOptions = options;
+                lastStartQuery = q;
             } else {
-                endCoord = snapped.coord;
-                endSnapDist = snapped.distMeters;
-                if (!endMarker) endMarker = L.marker(latlng, { draggable: false }).addTo(mapInst);
-                else endMarker.setLatLng(latlng);
+                endOptions = options;
             }
+            setEndpoint(role, options[0]);
 
-            return snapped.coord;
+            return options[0].coord;
         }
 
         // Solves Problem 1: Ties the workflow together
@@ -1192,8 +1375,8 @@ function notifyUser(message) {
                 endSearchBtn.addEventListener("click", async (e) => {
                     e.preventDefault();
                     
-                    // If start field has text but no coordinate, process it first
-                    if (startSearchInput && startSearchInput.value && !startCoord) {
+                    // Look up the start again if its text changed; an empty field keeps a start picked on the map
+                    if (startSearchInput && startSearchInput.value && startSearchInput.value !== lastStartQuery) {
                         await executeSearch(startSearchInput, "start");
                     }
                     
@@ -1224,22 +1407,20 @@ function notifyUser(message) {
         // Solves Problem 3: Catches Turf.js errors so the UI doesn't freeze
         async function safeRecompute() {
             try {
-                if (!startCoord || !endCoord) return;
-                
-                const distLabel = document.getElementById("route-distance");
-                if (distLabel) distLabel.innerText = "Calculating...";
+                if (!startOptions || !endOptions) return;
 
                 await recomputeRoute();
                 updateLabels();
             } catch (err) {
                 console.error("Routing Error:", err);
                 notifyUser("Unable to calculate a path between these points.");
-                const distLabel = document.getElementById("route-distance");
-                if (distLabel) distLabel.innerText = "--";
             }
         }
         // Initialize the new unified listeners
         setupSearchHandlers();
+
+        // Build the walkway graph once the page has settled, so the first search doesn't wait for it
+        setTimeout(getBaseGraph, 0);
     }
 
     /**
