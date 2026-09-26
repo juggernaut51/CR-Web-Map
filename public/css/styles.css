@@ -236,6 +236,7 @@ input, select{
     border-bottom: 1px solid #e6dad6;
 }
 .sidebar main{ padding: .9rem; }
+.sidebar-fieldgroup{ padding: .9rem; }
 fieldset{
     background: #fff;
     border: 1px solid #e6dad6;
@@ -555,6 +556,10 @@ button, .btn{
     .sidebar main {
         flex: 1 1 auto !important;
         overflow-y: auto !important;
+        padding-bottom: 2rem !important;
+    }
+
+    .sidebar-fieldgroup {
         padding-bottom: 2rem !important;
     }
 

@@ -1,9 +1,66 @@
 (async function () {
     const map = CR.initMap("map");
-    const [features, walkways] = await Promise.all([
-        CR.fetchFeatures(),
-        CR.fetchWalkways()
-    ]);
+
+    function showLoadErrorToast(message) {
+        const container = document.getElementById("toasts");
+        if (!container) { alert(message); return; }
+        const toast = document.createElement("div");
+        toast.className = "toast";
+        toast.style.backgroundColor = "#d32f2f";
+        toast.style.color = "white";
+        toast.textContent = message;
+        container.appendChild(toast);
+        setTimeout(() => toast.remove(), 4000);
+    }
+
+    let features, walkways;
+    try {
+        [features, walkways] = await Promise.all([
+            CR.fetchFeatures(),
+            CR.fetchWalkways()
+        ]);
+    } catch (e) {
+        // eslint-disable-next-line no-console
+        console.warn("Failed to load campus data", e);
+        showLoadErrorToast("Couldn't load campus data — please refresh.");
+        return;
+    }
+
+    CR.onMenuAction = function (action) {
+        if (action === "fit-to-campus") {
+            try {
+                const combined = {
+                    type: "FeatureCollection",
+                    features: features.features.concat(walkways.features)
+                };
+                const b = L.geoJSON(combined).getBounds();
+                if (b.isValid()) map.fitBounds(b, { padding: [40, 40] });
+            } catch (e) {
+                // eslint-disable-next-line no-console
+                console.warn("Fit to campus failed", e);
+            }
+            return;
+        }
+        if (action === "download-data") {
+            try {
+                const combined = {
+                    features: features.features,
+                    walkways: walkways.features
+                };
+                const blob = new Blob([JSON.stringify(combined, null, 2)], { type: "application/json" });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = "campus-data.json";
+                a.click();
+                URL.revokeObjectURL(url);
+            } catch (e) {
+                // eslint-disable-next-line no-console
+                console.warn("Download failed", e);
+            }
+            return;
+        }
+    };
 
     const pointsOnly = {
         type: "FeatureCollection",
@@ -22,7 +79,7 @@
         L.marker([lat, lng], {
             icon: L.divIcon({
                 className: "building-label",
-                html: `<span>${f.properties.name}</span>`,
+                html: `<span>${CR.escapeHtml(f.properties.name)}</span>`,
                 iconSize: [0, 0]
             }),
             interactive: false,

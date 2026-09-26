@@ -47,7 +47,8 @@
                 maxNativeZoom: 19, // ESRI imagery often stops here; allow over-zooming to reuse last good tiles
                 reuseTiles: true,
                 updateWhenZooming: false,
-                updateWhenIdle: true
+                updateWhenIdle: true,
+                attribution: "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community"
             }
         );
         const crSat = L.tileLayer("/static/tiles/cr-sat/{z}/{x}/{y}.jpg", {
@@ -89,6 +90,7 @@
      */
     async function fetchFeatures() {
         const res = await fetch("/api/features");
+        if (!res.ok) throw new Error("Failed to load features (" + res.status + ")");
         return res.json();
     }
 
@@ -134,6 +136,17 @@
     }
 
     /**
+     * Escapes HTML-special characters so untrusted strings can be inserted as text.
+     * @param {*} str Value to escape.
+     * @returns {string} Escaped string.
+     */
+    function escapeHtml(str) {
+        return String(str).replace(/[&<>"']/g, function (ch) {
+            return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch];
+        });
+    }
+
+    /**
      * Binds a popup to a layer showing key metadata.
      * @param {GeoJSON.Feature} feature Feature to describe.
      * @param {L.Layer} layer Leaflet layer.
@@ -141,9 +154,9 @@
      */
     function bindPopupForFeature(feature, layer) {
         var p = feature.properties || {};
-        var title = [p.name, p.number].filter(Boolean).join(" - ");
-        var meta = ["Type: " + (p.type || "unknown"), p.buildingId ? "Building: " + p.buildingId : ""].filter(Boolean).join("<br>");
-        var id = p._id ? '<small class="badge">#' + p._id + "</small>" : "";
+        var title = [p.name, p.number].filter(Boolean).map(escapeHtml).join(" - ");
+        var meta = ["Type: " + escapeHtml(p.type || "unknown"), p.buildingId ? "Building: " + escapeHtml(p.buildingId) : ""].filter(Boolean).join("<br>");
+        var id = p._id ? '<small class="badge">#' + escapeHtml(p._id) + "</small>" : "";
         layer.bindPopup("<strong>" + (title || "Feature") + "</strong> " + id + "<br>" + meta);
     }
 
@@ -244,6 +257,7 @@
      */
     async function fetchWalkways() {
         const res = await fetch("/api/walkways");
+        if (!res.ok) throw new Error("Failed to load walkways (" + res.status + ")");
         return res.json();
     }
 
@@ -1527,11 +1541,15 @@ function notifyUser(message) {
         btn.disabled = true;
         btn.textContent = "Resolving...";
         try {
-            await fetch(`/api/bugs/${id}`, { method: "DELETE" });
-            btn.closest("div[style]").remove();
+            const res = await fetch(`/api/bugs/${id}`, { method: "DELETE" });
+            if (!res.ok) throw new Error("Delete failed (" + res.status + ")");
+            const row = btn.closest("div[style]");
+            const card = row ? row.parentElement : null;
+            if (card) card.remove();
         } catch {
             btn.disabled = false;
             btn.textContent = "Resolve";
+            alert("Failed to resolve bug report. Please try again.");
         }
     };
 
@@ -1553,5 +1571,6 @@ function notifyUser(message) {
     window.CR.setBaseLayer = setBaseLayer;
     window.CR.initBugReport = initBugReport;
     window.CR.initBugLog = initBugLog;
+    window.CR.escapeHtml = escapeHtml;
 
 })();
