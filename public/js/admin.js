@@ -144,6 +144,26 @@
 
                     console.log("Polygon updated and saved to DB:", saved.properties.name);
 
+                } else if (geomType === "Point") {
+                    const updatedFeature = layer.toGeoJSON();
+
+                    // Preserve ALL original properties (name, type, buildingId, etc.)
+                    updatedFeature.properties = { ...layer.feature.properties };
+
+                    let saved;
+                    try {
+                        saved = await CR.saveFeature(updatedFeature);
+                    } catch (err) {
+                        restoreLayerGeometry(layer);
+                        showError("Could not save " + (layer.feature.properties.type || "feature"), err);
+                        return;
+                    }
+                    layer.feature = saved;
+
+                    const idx = allFeatures.findIndex(f => f.properties._id === saved.properties._id);
+                    if (idx >= 0) allFeatures[idx] = saved;
+
+                    console.log("Point updated and saved to DB:", saved.properties.name);
                 }
             });
         });
@@ -217,17 +237,8 @@
             }
             if (action === "download-data") {
                 try {
-                    const combined = {
-                        features: allFeatures,
-                        walkways: walkwayFeatures
-                    };
-                    const blob = new Blob([JSON.stringify(combined, null, 2)], { type: "application/json" });
-                    const url = URL.createObjectURL(blob);
-                    const a = document.createElement("a");
-                    a.href = url;
-                    a.download = "campus-data.json";
-                    a.click();
-                    URL.revokeObjectURL(url);
+                    downloadJson("features.json", { features: allFeatures });
+                    downloadJson("walkways.json", { features: walkwayFeatures });
                 } catch (e) {
                     // eslint-disable-next-line no-console
                     console.warn("Download failed", e);
@@ -498,6 +509,22 @@
         }
 
         /**
+         * Triggers a browser download of a JSON file with the given name.
+         * @param {string} filename
+         * @param {Object} data
+         * @returns {void}
+         */
+        function downloadJson(filename, data) {
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        /**
          * Puts a layer's shape back to its last saved geometry.
          * @param {L.Layer} layer
          * @returns {void}
@@ -508,112 +535,6 @@
             const depth = geom.type === "LineString" ? 0 : geom.type === "Polygon" ? 1 : 2;
             layer.setLatLngs(L.GeoJSON.coordsToLatLngs(geom.coordinates, depth));
         }
-
-        /**
-         * Snap / magnet a walkway polyline so it connects cleanly to the network:
-         *  - Every vertex snaps to the nearest walkway segment or node within SNAP_METERS.
-         *  - If start and end are nearly the same, we close the loop.
-         * @param {L.Map} mapInst
-         * @param {Array<[number,number]>} coords raw [lng,lat] polyline
-         * @param {GeoJSON.Feature[]} walkways existing walkway features
-         * @param {Array<[number,number]>} nodes existing graph nodes (entrances, endpoints, etc.)
-         * @param {number} snapMeters max snap distance in meters
-         * @returns {Array<[number,number]>} adjusted coordinates
-         */
-        function magnetizeWalkwayPolyline(mapInst, coords, walkways, nodes, snapMeters) {
-            if (!coords || coords.length < 2) return coords;
-
-            function snapToNodes(c) {
-                var p = L.latLng(c[1], c[0]);
-                var best = null;
-                for (var i = 0; i < nodes.length; i++) {
-                    var q = L.latLng(nodes[i][1], nodes[i][0]);
-                    var d = mapInst.distance(p, q);
-                    if (d <= snapMeters && (!best || d < best.d)) best = { d: d, c: nodes[i] };
-                }
-                return best ? best.c : c;
-            }
-
-            function snapToWalkwaySegments(c) {
-                const clickLL = L.latLng(c[1], c[0]);
-                const clickPt = mapInst.project(clickLL);
-                let best = null;
-
-                walkways.forEach(function (f) {
-                    if (!f.geometry || f.geometry.type !== "LineString") return;
-                    const segCoords = f.geometry.coordinates || [];
-                    if (segCoords.length < 2) return;
-
-                    for (let i = 0; i < segCoords.length - 1; i++) {
-                        const A = segCoords[i];
-                        const B = segCoords[i + 1];
-                        const aLL = L.latLng(A[1], A[0]);
-                        const bLL = L.latLng(B[1], B[0]);
-                        const aPt = mapInst.project(aLL);
-                        const bPt = mapInst.project(bLL);
-
-                        const vx = bPt.x - aPt.x;
-                        const vy = bPt.y - aPt.y;
-                        const wx = clickPt.x - aPt.x;
-                        const wy = clickPt.y - aPt.y;
-
-                        const vv = vx * vx + vy * vy || 1e-12;
-                        let t = (vx * wx + vy * wy) / vv;
-                        if (t < 0) t = 0;
-                        if (t > 1) t = 1;
-
-                        const projX = aPt.x + t * vx;
-                        const projY = aPt.y + t * vy;
-                        const projLL = mapInst.unproject(L.point(projX, projY));
-
-                        const dist = mapInst.distance(clickLL, projLL);
-                        if (dist <= snapMeters && (!best || dist < best.dist)) {
-                            best = {
-                                dist: dist,
-                                coord: [projLL.lng, projLL.lat]
-                            };
-                        }
-                    }
-                });
-
-                return best ? best.coord : c;
-            }
-
-            // Step 1: snap each vertex
-            const out = coords.map(function (c) {
-                let snapped = snapToWalkwaySegments(c);
-                if (snapped === c) snapped = snapToNodes(c);
-                return snapped;
-            });
-
-            // Step 2: auto-close loop if start/end are almost the same
-            if (out.length > 2) {
-                const firstLL = L.latLng(out[0][1], out[0][0]);
-                const lastLL = L.latLng(out[out.length - 1][1], out[out.length - 1][0]);
-                if (mapInst.distance(firstLL, lastLL) <= snapMeters) {
-                    out[out.length - 1] = out[0].slice();
-                }
-            }
-
-            // Step 3: remove duplicate / near-duplicate vertices
-            const cleaned = [];
-            for (let i = 0; i < out.length; i++) {
-                const c = out[i];
-                if (cleaned.length === 0) {
-                    cleaned.push(c);
-                } else {
-                    const prev = cleaned[cleaned.length - 1];
-                    const d = mapInst.distance(
-                        L.latLng(prev[1], prev[0]),
-                        L.latLng(c[1], c[0])
-                    );
-                    if (d > 0.1) cleaned.push(c);
-                }
-            }
-
-            return cleaned.length >= 2 ? cleaned : out;
-        }
-
 
         /**
          * Handles new geometry creation by saving to the correct store with walkway segmentation.
@@ -1133,6 +1054,7 @@
                     break;
                 }
                 wl.removeLayer(item.layer);
+                editableLayers.removeLayer(item.layer);
                 const idx = store.findIndex(function (f) { return f.properties && f.properties._id === item.id; });
                 if (idx >= 0) store.splice(idx, 1);
                 multiSelection.delete(item.id);
@@ -1190,7 +1112,7 @@
                 const id = l.feature && l.feature.properties && l.feature.properties._id;
                 if (id && deleted.has(id)) toRemove.push(l);
             });
-            toRemove.forEach(function (l) { wl.removeLayer(l); });
+            toRemove.forEach(function (l) { wl.removeLayer(l); editableLayers.removeLayer(l); });
             for (let i = walkwayFeatures.length - 1; i >= 0; i--) {
                 const f = walkwayFeatures[i];
                 if (f.properties && deleted.has(f.properties._id)) walkwayFeatures.splice(i, 1);
@@ -1262,25 +1184,6 @@
             });
 
             return nodes;
-        }
-
-        /**
-         * Snaps a line's endpoints to nearest existing node if within threshold.
-         * @param {L.Map} mapInst
-         * @param {GeoJSON.Feature} line
-         * @param {Array<[number,number]>} nodes
-         * @param {number} meters
-         * @returns {GeoJSON.Feature}
-         */
-        function snapLineEndpoints(mapInst, line, nodes, meters) {
-            if (!line.geometry || line.geometry.type !== "LineString") return line;
-            var coords = line.geometry.coordinates.slice();
-            if (coords.length < 2) return line;
-
-            coords[0] = snapCoord(mapInst, coords[0], nodes, meters);
-            coords[coords.length - 1] = snapCoord(mapInst, coords[coords.length - 1], nodes, meters);
-
-            return { type: "Feature", geometry: { type: "LineString", coordinates: coords }, properties: line.properties || {} };
         }
 
         /**
@@ -1521,162 +1424,6 @@
             const ww = Math.max(0, Math.min(1, 1 - (w || 0)));
             const ax = a ? a[0] : 0, ay = a ? a[1] : 0, bx = b ? b[0] : 0, by = b ? b[1] : 0;
             return [ax + (bx - ax) * ww, ay + (by - ay) * ww];
-        }
-
-        /**
-         * Find the closest point on any existing walkway line to a given coordinate.
-         * If within thresholdMeters, returns info for snapping and splitting.
-         * @param {L.Map} mapInst
-         * @param {[number,number]} coord [lng,lat] of the point to snap
-         * @param {GeoJSON.Feature[]} walkways
-         * @param {number} thresholdMeters
-         * @returns {{
-         *   feature: GeoJSON.Feature,
-         *   snappedCoord: [number,number],
-         *   segmentIndex: number,
-         *   t: number,
-         *   dist: number
-         * }|null}
-         */
-        function findClosestSnapOnWalkways(mapInst, coord, walkways, thresholdMeters) {
-            const clickLL = L.latLng(coord[1], coord[0]);
-            const clickPt = mapInst.project(clickLL);
-
-            let best = null;
-
-            walkways.forEach(function (f) {
-                if (!f.geometry || f.geometry.type !== "LineString") return;
-                const coords = f.geometry.coordinates || [];
-                if (coords.length < 2) return;
-
-                for (let i = 0; i < coords.length - 1; i++) {
-                    const A = coords[i];
-                    const B = coords[i + 1];
-
-                    const aLL = L.latLng(A[1], A[0]);
-                    const bLL = L.latLng(B[1], B[0]);
-                    const aPt = mapInst.project(aLL);
-                    const bPt = mapInst.project(bLL);
-
-                    const vx = bPt.x - aPt.x;
-                    const vy = bPt.y - aPt.y;
-                    const wx = clickPt.x - aPt.x;
-                    const wy = clickPt.y - aPt.y;
-
-                    const vv = vx * vx + vy * vy || 1e-12;
-                    let t = (vx * wx + vy * wy) / vv;
-                    if (t < 0) t = 0;
-                    if (t > 1) t = 1;
-
-                    const projX = aPt.x + t * vx;
-                    const projY = aPt.y + t * vy;
-                    const projLL = mapInst.unproject(L.point(projX, projY));
-
-                    const dist = mapInst.distance(clickLL, projLL);
-                    if (dist <= thresholdMeters && (!best || dist < best.dist)) {
-                        best = {
-                            feature: f,
-                            snappedCoord: [projLL.lng, projLL.lat],
-                            segmentIndex: i,
-                            t: t,
-                            dist: dist
-                        };
-                    }
-                }
-            });
-
-            return best;
-        }
-
-        /**
-         * Split a walkway feature at the given snapped point.
-         * Replaces the original feature with two new features, updates the layer + array.
-         * @param {L.Map} mapInst
-         * @param {L.GeoJSON} walkwayLayer
-         * @param {GeoJSON.Feature[]} walkwayFeatures
-         * @param {{
-         *   feature: GeoJSON.Feature,
-         *   snappedCoord: [number,number],
-         *   segmentIndex: number
-         * }} snapInfo
-         * @param {(layer:L.Layer)=>void} onAttach
-         * @returns {Promise<void>}
-         */
-        async function splitWalkwayAtPoint(mapInst, walkwayLayer, walkwayFeatures, snapInfo, onAttach) {
-            const orig = snapInfo.feature;
-            if (!orig.geometry || orig.geometry.type !== "LineString") return;
-
-            const coords = orig.geometry.coordinates.slice();
-            const j = snapInfo.segmentIndex;
-            const A = coords[j];
-            const B = coords[j + 1];
-            const P = snapInfo.snappedCoord;
-
-            // If we're essentially at an endpoint, no real split needed.
-            const same = function (c1, c2) {
-                return Math.abs(c1[0] - c2[0]) < 1e-10 && Math.abs(c1[1] - c2[1]) < 1e-10;
-            };
-            const atA = same(P, A);
-            const atB = same(P, B);
-
-            if (atA || atB) {
-                // No split, just keep endpoints as-is.
-                return;
-            }
-
-            const before = coords.slice(0, j + 1);
-            const after = coords.slice(j + 1);
-
-            const firstCoords = before.concat([P]);
-            const secondCoords = [P].concat(after);
-
-            const baseProps = Object.assign({}, orig.properties || {});
-            delete baseProps._id;  // let server assign new ids
-            delete baseProps.segmentIndex;
-
-            const f1 = {
-                type: "Feature",
-                geometry: { type: "LineString", coordinates: firstCoords },
-                properties: Object.assign({}, baseProps)
-            };
-
-            const f2 = {
-                type: "Feature",
-                geometry: { type: "LineString", coordinates: secondCoords },
-                properties: Object.assign({}, baseProps)
-            };
-
-            const origId = orig.properties && orig.properties._id;
-
-            // Remove the original feature from memory
-            const idx = walkwayFeatures.findIndex(f => f.properties && f.properties._id === origId);
-            if (idx >= 0) walkwayFeatures.splice(idx, 1);
-
-            // Remove the original layer from map
-            let layerToRemove = null;
-            walkwayLayer.eachLayer(function (l) {
-                if (l.feature && l.feature.properties && l.feature.properties._id === origId) {
-                    layerToRemove = l;
-                }
-            });
-            if (layerToRemove) walkwayLayer.removeLayer(layerToRemove);
-
-            // Persist new segments
-            const saved1 = await CR.saveWalkway(f1);
-            const saved2 = await CR.saveWalkway(f2);
-
-            walkwayFeatures.push(saved1, saved2);
-
-            // Add them back to the map
-            function addWalkwayFeature(saved) {
-                const g = L.geoJSON(saved, {
-                    style: function () { return { color: "rgb(16,124,111)", weight: 3 }; }
-                }).addTo(walkwayLayer);
-                g.eachLayer(function (ll) { onAttach(ll); });
-            }
-
-            addWalkwayFeature(saved1);
-            addWalkwayFeature(saved2);
         }
 
     }
