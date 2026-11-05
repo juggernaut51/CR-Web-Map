@@ -137,6 +137,27 @@ npx playwright install chromium   # once per machine
 npm test
 ```
 
+The tests need a Postgres server reachable from the host at `localhost`. The `db`
+service in `docker-compose.yml` doesn't publish port 5432 to the host (only the `app`
+container can reach it, as `db:5432`), so it can't be used here — install Postgres
+locally instead (e.g. via your OS package manager, or any standalone Postgres container
+started with its port published to the host), then create a user with `CREATEDB`:
+
+```
+psql -c "CREATE USER crmap WITH PASSWORD 'crmap_secret' CREATEDB;"
+```
+
+On Windows (Command Prompt), set the `TEST_POSTGRES_*` variables for the current
+session before running the suite:
+
+```
+set TEST_POSTGRES_HOST=localhost
+set TEST_POSTGRES_PORT=5432
+set TEST_POSTGRES_USER=crmap
+set TEST_POSTGRES_PASS=crmap_secret
+npm test
+```
+
 - The tests never touch the app's own `POSTGRES_*` variables or the app's database.
   They read their own `TEST_POSTGRES_HOST` (default `localhost`), `TEST_POSTGRES_PORT`
   (default `5432`), `TEST_POSTGRES_USER` and `TEST_POSTGRES_PASS`, and always use a

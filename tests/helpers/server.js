@@ -46,6 +46,9 @@ async function startServer({
         COOKIE_SECURE: "false",
         ADMIN_PASSWORD: adminPassword,
         SESSION_SECRET: sessionSecret,
+        // Never let a webhook URL from the host shell leak in and notify a real
+        // Discord channel about test bug reports.
+        DISCORD_WEBHOOK_URL: "",
         ...extraEnv
     };
 

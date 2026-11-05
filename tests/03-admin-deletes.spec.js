@@ -7,7 +7,8 @@ const {
     CAMPUS_CENTER,
     installMapCapture,
     drawPolygonAtLatLngs,
-    ctrlClickAtLatLng
+    ctrlClickAtLatLng,
+    layerExistsById
 } = require("./helpers/draw");
 
 const [CX, CY] = CAMPUS_CENTER;
@@ -99,6 +100,9 @@ test.describe("admin deletes", () => {
         expect(walkways.features.some((f) => f.properties._id === walkwayA.properties._id)).toBe(false);
         expect(walkways.features.some((f) => f.properties._id === walkwayB.properties._id)).toBe(false);
 
+        expect(await layerExistsById(page, walkwayA.properties._id)).toBe(false);
+        expect(await layerExistsById(page, walkwayB.properties._id)).toBe(false);
+
         await context.close();
     });
 
@@ -143,6 +147,11 @@ test.describe("admin deletes", () => {
             expect(after.features.some((f) => f.properties._id === w.properties._id)).toBe(false);
         }
         expect(after.features.length).toBe(before.features.length - expectedCount);
+
+        const deletedIds = deletes.list.map((d) => d.url.split("/").pop());
+        for (const id of deletedIds) {
+            expect(await layerExistsById(page, id)).toBe(false);
+        }
 
         await context.close();
     });

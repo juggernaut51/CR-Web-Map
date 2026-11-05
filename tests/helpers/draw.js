@@ -59,6 +59,32 @@ async function ctrlClickAtLatLng(page, coord) {
     return { x, y };
 }
 
+/**
+ * Checks whether any layer on the captured map (see installMapCapture) still carries a
+ * feature with this `_id`, recursing into layer groups. Used to confirm a deleted
+ * feature is actually gone from the map, not just from the server.
+ * @param {import('@playwright/test').Page} page
+ * @param {string} id
+ * @returns {Promise<boolean>}
+ */
+async function layerExistsById(page, id) {
+    return page.evaluate((targetId) => {
+        let found = false;
+        const visit = (layer) => {
+            if (found) return;
+            if (layer.feature && layer.feature.properties && layer.feature.properties._id === targetId) {
+                found = true;
+                return;
+            }
+            if (typeof layer.eachLayer === "function") {
+                layer.eachLayer(visit);
+            }
+        };
+        window.__crMap.eachLayer(visit);
+        return found;
+    }, id);
+}
+
 async function mapBoundingBox(page) {
     const box = await page.locator("#map").boundingBox();
     if (!box) throw new Error("#map has no bounding box — is the page loaded?");
@@ -198,6 +224,7 @@ module.exports = {
     pixelForLatLng,
     clickAtLatLng,
     ctrlClickAtLatLng,
+    layerExistsById,
     mapBoundingBox,
     clickMapAt,
     ctrlClickMapAt,
