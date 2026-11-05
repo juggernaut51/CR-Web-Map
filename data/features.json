@@ -3,167 +3,20 @@
     {
       "type": "Feature",
       "geometry": {
-        "type": "Polygon",
+        "type": "Point",
         "coordinates": [
-          [
-            [
-              -124.197317,
-              40.698167
-            ],
-            [
-              -124.19674,
-              40.69823
-            ],
-            [
-              -124.196732,
-              40.698174
-            ],
-            [
-              -124.196552,
-              40.698195
-            ],
-            [
-              -124.196563,
-              40.698243
-            ],
-            [
-              -124.196509,
-              40.698252
-            ],
-            [
-              -124.196512,
-              40.698279
-            ],
-            [
-              -124.196333,
-              40.6983
-            ],
-            [
-              -124.196369,
-              40.698665
-            ],
-            [
-              -124.197386,
-              40.698569
-            ],
-            [
-              -124.197317,
-              40.698167
-            ]
-          ]
+          -124.196734,
+          40.698203
         ]
       },
       "properties": {
-        "name": "Learning Resource Center",
-        "type": "building",
-        "_id": "399d0995-42f1-4e72-b874-3767bc17fa95"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              -124.198294,
-              40.698369
-            ],
-            [
-              -124.198279,
-              40.6984
-            ],
-            [
-              -124.198227,
-              40.698386
-            ],
-            [
-              -124.198175,
-              40.698491
-            ],
-            [
-              -124.198141,
-              40.698474
-            ],
-            [
-              -124.197922,
-              40.698929
-            ],
-            [
-              -124.198178,
-              40.698998
-            ],
-            [
-              -124.198193,
-              40.698963
-            ],
-            [
-              -124.198264,
-              40.698985
-            ],
-            [
-              -124.198299,
-              40.698912
-            ],
-            [
-              -124.198325,
-              40.698919
-            ],
-            [
-              -124.198396,
-              40.698764
-            ],
-            [
-              -124.198448,
-              40.698777
-            ],
-            [
-              -124.198506,
-              40.698658
-            ],
-            [
-              -124.19846,
-              40.698643
-            ],
-            [
-              -124.198497,
-              40.698569
-            ],
-            [
-              -124.198471,
-              40.698556
-            ],
-            [
-              -124.198505,
-              40.698496
-            ],
-            [
-              -124.198463,
-              40.698484
-            ],
-            [
-              -124.19848,
-              40.698451
-            ],
-            [
-              -124.198426,
-              40.698437
-            ],
-            [
-              -124.19844,
-              40.698412
-            ],
-            [
-              -124.198294,
-              40.698369
-            ]
-          ]
-        ]
-      },
-      "properties": {
-        "name": "Humanities",
-        "type": "building",
-        "_id": "f6624078-160e-45c3-9530-b135157fc128"
+        "_id": "3beefdac-580d-407c-80f3-1fd074bf1ba3",
+        "name": "LRC-SE1",
+        "type": "entrance",
+        "direction": "SE",
+        "buildingId": "399d0995-42f1-4e72-b874-3767bc17fa95",
+        "number": null,
+        "prefix": null
       }
     },
     {
@@ -236,76 +89,13 @@
         ]
       },
       "properties": {
+        "_id": "2397aa97-6e17-4f71-ac7a-f38fd3482d3d",
         "name": "Science and Mathematics",
         "type": "building",
-        "_id": "2397aa97-6e17-4f71-ac7a-f38fd3482d3d"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              -124.198685,
-              40.699121
-            ],
-            [
-              -124.198398,
-              40.699038
-            ],
-            [
-              -124.198346,
-              40.699153
-            ],
-            [
-              -124.198096,
-              40.699082
-            ],
-            [
-              -124.198019,
-              40.699239
-            ],
-            [
-              -124.198421,
-              40.69935
-            ],
-            [
-              -124.198366,
-              40.699462
-            ],
-            [
-              -124.198573,
-              40.699521
-            ],
-            [
-              -124.198617,
-              40.699431
-            ],
-            [
-              -124.198678,
-              40.699448
-            ],
-            [
-              -124.198802,
-              40.699188
-            ],
-            [
-              -124.198671,
-              40.699152
-            ],
-            [
-              -124.198685,
-              40.699121
-            ]
-          ]
-        ]
-      },
-      "properties": {
-        "name": "Student Union",
-        "type": "building",
-        "_id": "492e1b5f-b299-4f55-a63d-b2e02c94c00d"
+        "number": null,
+        "prefix": "SC",
+        "direction": null,
+        "buildingId": null
       }
     },
     {
@@ -450,162 +240,13 @@
         ]
       },
       "properties": {
+        "_id": "f467c422-9272-4bfe-8d4b-e9664a82f1c2",
         "name": "Public Safety/Redwood Business Complex",
         "type": "building",
-        "_id": "f467c422-9272-4bfe-8d4b-e9664a82f1c2"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              -124.197027,
-              40.698737
-            ],
-            [
-              -124.196775,
-              40.698761
-            ],
-            [
-              -124.196794,
-              40.698877
-            ],
-            [
-              -124.196416,
-              40.698913
-            ],
-            [
-              -124.196513,
-              40.6995
-            ],
-            [
-              -124.19677,
-              40.699475
-            ],
-            [
-              -124.196778,
-              40.699516
-            ],
-            [
-              -124.19763,
-              40.699433
-            ],
-            [
-              -124.197569,
-              40.699057
-            ],
-            [
-              -124.197502,
-              40.699061
-            ],
-            [
-              -124.197448,
-              40.698734
-            ],
-            [
-              -124.197111,
-              40.698766
-            ],
-            [
-              -124.197177,
-              40.699155
-            ],
-            [
-              -124.197034,
-              40.699172
-            ],
-            [
-              -124.196986,
-              40.698896
-            ],
-            [
-              -124.197053,
-              40.698889
-            ],
-            [
-              -124.197027,
-              40.698737
-            ]
-          ]
-        ]
-      },
-      "properties": {
-        "name": "Applied Technology",
-        "type": "building",
-        "_id": "4f38fa33-ba0d-41ed-affe-9d590ca01667"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              -124.19632,
-              40.699879
-            ],
-            [
-              -124.196316,
-              40.699783
-            ],
-            [
-              -124.196093,
-              40.699789
-            ],
-            [
-              -124.1961,
-              40.699886
-            ],
-            [
-              -124.19632,
-              40.699879
-            ]
-          ]
-        ]
-      },
-      "properties": {
-        "name": "Academy of the Redwoods Office",
-        "type": "building",
-        "_id": "5289457b-9703-4087-aff1-74f9657e1b4c"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              -124.195974,
-              40.699897
-            ],
-            [
-              -124.195967,
-              40.699623
-            ],
-            [
-              -124.195811,
-              40.699623
-            ],
-            [
-              -124.195811,
-              40.699908
-            ],
-            [
-              -124.195974,
-              40.699897
-            ]
-          ]
-        ]
-      },
-      "properties": {
-        "name": "Greenhouse",
-        "type": "building",
-        "_id": "8d55f5c2-2c8b-4d40-837c-279f960d9426"
+        "number": null,
+        "prefix": "RBC",
+        "direction": null,
+        "buildingId": null
       }
     },
     {
@@ -646,9 +287,13 @@
         ]
       },
       "properties": {
+        "_id": "78ff7168-9880-4b87-a8c7-6556eac4d30c",
         "name": "Academy of the Redwoods Classrooms",
         "type": "building",
-        "_id": "78ff7168-9880-4b87-a8c7-6556eac4d30c"
+        "number": null,
+        "buildingId": null,
+        "prefix": null,
+        "direction": null
       }
     },
     {
@@ -658,48 +303,52 @@
         "coordinates": [
           [
             [
-              -124.195443,
-              40.699542
+              -124.195329,
+              40.698613
             ],
             [
-              -124.194928,
-              40.69933
+              -124.195086,
+              40.698507
             ],
             [
-              -124.195025,
-              40.6992
+              -124.195346,
+              40.698156
             ],
             [
-              -124.195243,
-              40.699292
+              -124.195601,
+              40.698264
             ],
             [
-              -124.195332,
-              40.699174
+              -124.19558,
+              40.698292
             ],
             [
-              -124.195472,
-              40.699233
+              -124.195753,
+              40.698368
             ],
             [
-              -124.195387,
-              40.699352
+              -124.195492,
+              40.698719
             ],
             [
-              -124.195531,
-              40.699414
+              -124.19531,
+              40.698641
             ],
             [
-              -124.195443,
-              40.699542
+              -124.195329,
+              40.698613
             ]
           ]
         ]
       },
       "properties": {
-        "name": "Del Norte Residence Hall",
+        "_id": "11c29f46-e93a-4dc8-94d9-76a0d0c110fd",
+        "name": "Student Services",
         "type": "building",
-        "_id": "3a2a7f50-ac73-48f5-a19d-9e28e52b1d46"
+        "number": null,
+        "prefix": "SS",
+        "direction": null,
+        "buildingId": null
       }
     },
     {
@@ -756,9 +405,13 @@
         ]
       },
       "properties": {
+        "_id": "fee67847-929f-4520-8bdc-9a6bff3b467a",
         "name": "Mendocino Residence Hall",
         "type": "building",
-        "_id": "fee67847-929f-4520-8bdc-9a6bff3b467a"
+        "number": null,
+        "prefix": "MH",
+        "direction": null,
+        "buildingId": null
       }
     },
     {
@@ -768,91 +421,52 @@
         "coordinates": [
           [
             [
-              -124.195329,
-              40.698613
-            ],
-            [
-              -124.195086,
-              40.698507
-            ],
-            [
-              -124.195346,
-              40.698156
-            ],
-            [
-              -124.195601,
-              40.698264
-            ],
-            [
-              -124.19558,
-              40.698292
-            ],
-            [
-              -124.195753,
-              40.698368
-            ],
-            [
-              -124.195492,
-              40.698719
-            ],
-            [
-              -124.19531,
-              40.698641
-            ],
-            [
-              -124.195329,
-              40.698613
-            ]
-          ]
-        ]
-      },
-      "properties": {
-        "name": "Student Services",
-        "type": "building",
-        "_id": "11c29f46-e93a-4dc8-94d9-76a0d0c110fd"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              -124.195227,
-              40.698154
-            ],
-            [
-              -124.194964,
-              40.698076
-            ],
-            [
-              -124.194823,
-              40.698349
-            ],
-            [
-              -124.194883,
-              40.698366
+              -124.195443,
+              40.699542
             ],
             [
               -124.194928,
-              40.698475
+              40.69933
             ],
             [
-              -124.19504,
-              40.698508
+              -124.195025,
+              40.6992
             ],
             [
-              -124.195227,
-              40.698154
+              -124.195243,
+              40.699292
+            ],
+            [
+              -124.195332,
+              40.699174
+            ],
+            [
+              -124.195472,
+              40.699233
+            ],
+            [
+              -124.195387,
+              40.699352
+            ],
+            [
+              -124.195531,
+              40.699414
+            ],
+            [
+              -124.195443,
+              40.699542
             ]
           ]
         ]
       },
       "properties": {
-        "name": "Theater",
+        "_id": "3a2a7f50-ac73-48f5-a19d-9e28e52b1d46",
+        "name": "Del Norte Residence Hall",
         "type": "building",
-        "_id": "1724f989-4a38-4375-885a-8a762cacf6ff"
+        "number": null,
+        "prefix": "DH",
+        "direction": null,
+        "buildingId": null
       }
     },
     {
@@ -862,64 +476,36 @@
         "coordinates": [
           [
             [
-              -124.195589,
-              40.697862
+              -124.195974,
+              40.699897
             ],
             [
-              -124.194704,
-              40.697934
+              -124.195967,
+              40.699623
             ],
             [
-              -124.194631,
-              40.697422
+              -124.195811,
+              40.699623
             ],
             [
-              -124.19474,
-              40.697413
+              -124.195811,
+              40.699908
             ],
             [
-              -124.194726,
-              40.697323
-            ],
-            [
-              -124.194856,
-              40.697311
-            ],
-            [
-              -124.194815,
-              40.697025
-            ],
-            [
-              -124.195263,
-              40.696988
-            ],
-            [
-              -124.195298,
-              40.697246
-            ],
-            [
-              -124.195384,
-              40.69724
-            ],
-            [
-              -124.1954,
-              40.69736
-            ],
-            [
-              -124.195512,
-              40.697354
-            ],
-            [
-              -124.195589,
-              40.697862
+              -124.195974,
+              40.699897
             ]
           ]
         ]
       },
       "properties": {
-        "name": "Physical Education",
+        "_id": "8d55f5c2-2c8b-4d40-837c-279f960d9426",
+        "name": "Greenhouse",
         "type": "building",
-        "_id": "bd7d6ba1-19ce-4843-b776-30d4f55532ae"
+        "number": null,
+        "prefix": "GH",
+        "direction": null,
+        "buildingId": null
       }
     },
     {
@@ -929,48 +515,36 @@
         "coordinates": [
           [
             [
-              -124.195521,
-              40.696318
+              -124.19632,
+              40.699879
             ],
             [
-              -124.19544,
-              40.696263
+              -124.196316,
+              40.699783
             ],
             [
-              -124.195282,
-              40.696397
+              -124.196093,
+              40.699789
             ],
             [
-              -124.194934,
-              40.696161
+              -124.1961,
+              40.699886
             ],
             [
-              -124.195241,
-              40.695904
-            ],
-            [
-              -124.195295,
-              40.69594
-            ],
-            [
-              -124.195333,
-              40.695909
-            ],
-            [
-              -124.195703,
-              40.696164
-            ],
-            [
-              -124.195521,
-              40.696318
+              -124.19632,
+              40.699879
             ]
           ]
         ]
       },
       "properties": {
-        "name": "Child Development Center",
+        "_id": "5289457b-9703-4087-aff1-74f9657e1b4c",
+        "name": "Academy of the Redwoods Office",
         "type": "building",
-        "_id": "aa9deb25-d5db-4210-a11f-0902ae43d434"
+        "number": null,
+        "prefix": "AR",
+        "direction": null,
+        "buildingId": null
       }
     },
     {
@@ -1055,9 +629,13 @@
         ]
       },
       "properties": {
+        "_id": "9a2e69fd-1cd6-4b5b-b706-2f63efce50ba",
         "name": "Field House",
         "type": "building",
-        "_id": "9a2e69fd-1cd6-4b5b-b706-2f63efce50ba"
+        "number": null,
+        "prefix": "FH",
+        "direction": null,
+        "buildingId": null
       }
     },
     {
@@ -1067,56 +645,99 @@
         "coordinates": [
           [
             [
-              -124.192933,
-              40.696573
+              -124.195227,
+              40.698154
             ],
             [
-              -124.19294,
-              40.69662
+              -124.194964,
+              40.698076
             ],
             [
-              -124.192602,
-              40.696633
+              -124.194823,
+              40.698349
             ],
             [
-              -124.192585,
-              40.696391
+              -124.194883,
+              40.698366
             ],
             [
-              -124.192691,
-              40.696387
+              -124.194928,
+              40.698475
             ],
             [
-              -124.192674,
-              40.696141
+              -124.19504,
+              40.698508
             ],
             [
-              -124.192901,
-              40.696134
-            ],
-            [
-              -124.19292,
-              40.696427
-            ],
-            [
-              -124.1931,
-              40.696425
-            ],
-            [
-              -124.193113,
-              40.696565
-            ],
-            [
-              -124.192933,
-              40.696573
+              -124.195227,
+              40.698154
             ]
           ]
         ]
       },
       "properties": {
-        "name": "Emergency Response Training Center",
+        "_id": "1724f989-4a38-4375-885a-8a762cacf6ff",
+        "name": "Theater",
         "type": "building",
-        "_id": "2b5c1e00-d87c-4c62-a2ce-c08aaeadbbbe"
+        "number": null,
+        "prefix": "TH",
+        "direction": null,
+        "buildingId": null
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -124.195521,
+              40.696318
+            ],
+            [
+              -124.19544,
+              40.696263
+            ],
+            [
+              -124.195282,
+              40.696397
+            ],
+            [
+              -124.194934,
+              40.696161
+            ],
+            [
+              -124.195241,
+              40.695904
+            ],
+            [
+              -124.195295,
+              40.69594
+            ],
+            [
+              -124.195333,
+              40.695909
+            ],
+            [
+              -124.195703,
+              40.696164
+            ],
+            [
+              -124.195521,
+              40.696318
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "_id": "aa9deb25-d5db-4210-a11f-0902ae43d434",
+        "name": "Child Development Center",
+        "type": "building",
+        "number": null,
+        "prefix": "CDC",
+        "direction": null,
+        "buildingId": null
       }
     },
     {
@@ -1149,52 +770,222 @@
         ]
       },
       "properties": {
+        "_id": "866a7bd0-75bb-48a8-9abb-868df6884f33",
         "name": "Maintenance and Grounds",
         "type": "building",
-        "_id": "866a7bd0-75bb-48a8-9abb-868df6884f33"
+        "number": null,
+        "prefix": "MN",
+        "direction": null,
+        "buildingId": null
       }
     },
     {
       "type": "Feature",
       "geometry": {
-        "type": "Polygon",
+        "type": "Point",
         "coordinates": [
-          [
-            [
-              -124.191696,
-              40.697057
-            ],
-            [
-              -124.191585,
-              40.697073
-            ],
-            [
-              -124.191748,
-              40.697771
-            ],
-            [
-              -124.192172,
-              40.697714
-            ],
-            [
-              -124.192129,
-              40.697523
-            ],
-            [
-              -124.191818,
-              40.697565
-            ],
-            [
-              -124.191696,
-              40.697057
-            ]
-          ]
+          -124.198477,
+          40.698719
         ]
       },
       "properties": {
-        "name": "Warehouse and Mailroom",
-        "type": "building",
-        "_id": "ea98693a-22bb-46aa-84f1-0ed5677140e7"
+        "_id": "8fef23f4-33cf-45b9-9527-8c1376b30996",
+        "name": "HU-W1",
+        "type": "entrance",
+        "buildingId": "f6624078-160e-45c3-9530-b135157fc128",
+        "number": null,
+        "prefix": null,
+        "direction": null
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -124.198354,
+          40.69839
+        ]
+      },
+      "properties": {
+        "_id": "63749c64-14c5-430d-9c32-2c6cbd4cf087",
+        "name": "HU-S1",
+        "type": "entrance",
+        "buildingId": "f6624078-160e-45c3-9530-b135157fc128",
+        "number": null,
+        "prefix": null,
+        "direction": null
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -124.198083,
+          40.698963
+        ]
+      },
+      "properties": {
+        "_id": "bb52b633-dc37-4515-8e24-fbc81d2cfb67",
+        "name": "HU-N1",
+        "type": "entrance",
+        "buildingId": "f6624078-160e-45c3-9530-b135157fc128",
+        "number": null,
+        "prefix": null,
+        "direction": null
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -124.198649,
+          40.698869
+        ]
+      },
+      "properties": {
+        "_id": "42188e8b-a4d0-4b93-b3f2-e00a2fc8f27f",
+        "name": "SAM-SE1",
+        "type": "entrance",
+        "direction": "SE",
+        "buildingId": "2397aa97-6e17-4f71-ac7a-f38fd3482d3d",
+        "number": null,
+        "prefix": null
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -124.198223,
+          40.699124
+        ]
+      },
+      "properties": {
+        "_id": "dbdfff71-0813-4be6-9b79-960cc23f9115",
+        "name": "SU-SE1",
+        "type": "entrance",
+        "direction": "SE",
+        "buildingId": "492e1b5f-b299-4f55-a63d-b2e02c94c00d",
+        "number": null,
+        "prefix": null
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -124.198096,
+          40.698576
+        ]
+      },
+      "properties": {
+        "_id": "675f6f9b-433d-4e0a-86a9-6da6898af66f",
+        "name": "HU-SE1",
+        "type": "entrance",
+        "direction": "SE",
+        "buildingId": "f6624078-160e-45c3-9530-b135157fc128",
+        "number": null,
+        "prefix": null
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -124.197984,
+          40.698814
+        ]
+      },
+      "properties": {
+        "_id": "8d289773-76b1-4921-a7c8-fb656eeb046f",
+        "name": "HU-NE1",
+        "type": "entrance",
+        "direction": "NE",
+        "buildingId": "f6624078-160e-45c3-9530-b135157fc128",
+        "number": null,
+        "prefix": null
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -124.199118,
+          40.698797
+        ]
+      },
+      "properties": {
+        "_id": "4dfe76b2-c901-45ef-bb50-4792df189f33",
+        "name": "SAM-SW1",
+        "type": "entrance",
+        "direction": "SW",
+        "buildingId": "2397aa97-6e17-4f71-ac7a-f38fd3482d3d",
+        "number": null,
+        "prefix": null
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -124.199035,
+          40.699106
+        ]
+      },
+      "properties": {
+        "_id": "9ac564cc-0d00-4cdd-bc95-a287b29a4cbb",
+        "name": "SAM-NW1",
+        "type": "entrance",
+        "direction": "NW",
+        "buildingId": "2397aa97-6e17-4f71-ac7a-f38fd3482d3d",
+        "number": null,
+        "prefix": null
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -124.19845,
+          40.699055
+        ]
+      },
+      "properties": {
+        "_id": "52742824-225b-4f8d-a99f-9673ee83b916",
+        "name": "SU-S1",
+        "type": "entrance",
+        "direction": "S",
+        "buildingId": "492e1b5f-b299-4f55-a63d-b2e02c94c00d",
+        "number": null,
+        "prefix": null
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -124.19866,
+          40.699118
+        ]
+      },
+      "properties": {
+        "_id": "5d532e73-a9d9-4ccb-8ec6-b94a1c524361",
+        "name": "SU-SW1",
+        "type": "entrance",
+        "direction": "SW",
+        "buildingId": "492e1b5f-b299-4f55-a63d-b2e02c94c00d",
+        "number": null,
+        "prefix": null
       }
     },
     {
@@ -1227,210 +1018,13 @@
         ]
       },
       "properties": {
-        "name": "Firing Range",
+        "_id": "3fba758e-d39e-4650-ae49-b687e4ce8eda",
+        "name": "Range Complex",
         "type": "building",
-        "_id": "3fba758e-d39e-4650-ae49-b687e4ce8eda"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -124.198477,
-          40.698719
-        ]
-      },
-      "properties": {
-        "name": "HU-W1",
-        "buildingId": "f6624078-160e-45c3-9530-b135157fc128",
-        "type": "entrance",
-        "_id": "8fef23f4-33cf-45b9-9527-8c1376b30996"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -124.198354,
-          40.69839
-        ]
-      },
-      "properties": {
-        "name": "HU-S1",
-        "buildingId": "f6624078-160e-45c3-9530-b135157fc128",
-        "type": "entrance",
-        "_id": "63749c64-14c5-430d-9c32-2c6cbd4cf087"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -124.198083,
-          40.698963
-        ]
-      },
-      "properties": {
-        "name": "HU-N1",
-        "buildingId": "f6624078-160e-45c3-9530-b135157fc128",
-        "type": "entrance",
-        "_id": "bb52b633-dc37-4515-8e24-fbc81d2cfb67"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -124.198649,
-          40.698869
-        ]
-      },
-      "properties": {
-        "type": "entrance",
-        "name": "SAM-SE1",
-        "buildingId": "2397aa97-6e17-4f71-ac7a-f38fd3482d3d",
-        "direction": "SE",
-        "_id": "42188e8b-a4d0-4b93-b3f2-e00a2fc8f27f"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -124.198223,
-          40.699124
-        ]
-      },
-      "properties": {
-        "type": "entrance",
-        "name": "SU-SE1",
-        "buildingId": "492e1b5f-b299-4f55-a63d-b2e02c94c00d",
-        "direction": "SE",
-        "_id": "dbdfff71-0813-4be6-9b79-960cc23f9115"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -124.198096,
-          40.698576
-        ]
-      },
-      "properties": {
-        "type": "entrance",
-        "name": "HU-SE1",
-        "buildingId": "f6624078-160e-45c3-9530-b135157fc128",
-        "direction": "SE",
-        "_id": "675f6f9b-433d-4e0a-86a9-6da6898af66f"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -124.197984,
-          40.698814
-        ]
-      },
-      "properties": {
-        "type": "entrance",
-        "name": "HU-NE1",
-        "buildingId": "f6624078-160e-45c3-9530-b135157fc128",
-        "direction": "NE",
-        "_id": "8d289773-76b1-4921-a7c8-fb656eeb046f"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -124.199118,
-          40.698797
-        ]
-      },
-      "properties": {
-        "type": "entrance",
-        "name": "SAM-SW1",
-        "buildingId": "2397aa97-6e17-4f71-ac7a-f38fd3482d3d",
-        "direction": "SW",
-        "_id": "4dfe76b2-c901-45ef-bb50-4792df189f33"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -124.199035,
-          40.699106
-        ]
-      },
-      "properties": {
-        "type": "entrance",
-        "name": "SAM-NW1",
-        "buildingId": "2397aa97-6e17-4f71-ac7a-f38fd3482d3d",
-        "direction": "NW",
-        "_id": "9ac564cc-0d00-4cdd-bc95-a287b29a4cbb"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -124.19845,
-          40.699055
-        ]
-      },
-      "properties": {
-        "type": "entrance",
-        "name": "SU-S1",
-        "buildingId": "492e1b5f-b299-4f55-a63d-b2e02c94c00d",
-        "direction": "S",
-        "_id": "52742824-225b-4f8d-a99f-9673ee83b916"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -124.19866,
-          40.699118
-        ]
-      },
-      "properties": {
-        "type": "entrance",
-        "name": "SU-SW1",
-        "buildingId": "492e1b5f-b299-4f55-a63d-b2e02c94c00d",
-        "direction": "SW",
-        "_id": "5d532e73-a9d9-4ccb-8ec6-b94a1c524361"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -124.196734,
-          40.698203
-        ]
-      },
-      "properties": {
-        "type": "entrance",
-        "name": "LRC-SE1",
-        "buildingId": "399d0995-42f1-4e72-b874-3767bc17fa95",
-        "direction": "SE",
-        "_id": "3beefdac-580d-407c-80f3-1fd074bf1ba3"
+        "number": null,
+        "prefix": "RC",
+        "direction": null,
+        "buildingId": null
       }
     },
     {
@@ -1443,11 +1037,13 @@
         ]
       },
       "properties": {
-        "type": "entrance",
+        "_id": "4fc1e3f8-aaf6-4653-8d12-bc4570074b6f",
         "name": "LRC-SE2",
-        "buildingId": "399d0995-42f1-4e72-b874-3767bc17fa95",
+        "type": "entrance",
         "direction": "SE",
-        "_id": "4fc1e3f8-aaf6-4653-8d12-bc4570074b6f"
+        "buildingId": "399d0995-42f1-4e72-b874-3767bc17fa95",
+        "number": null,
+        "prefix": null
       }
     },
     {
@@ -1460,11 +1056,13 @@
         ]
       },
       "properties": {
-        "type": "entrance",
+        "_id": "100d3af3-20ba-4a7b-b17e-13c58e715c10",
         "name": "LRC-S1",
-        "buildingId": "399d0995-42f1-4e72-b874-3767bc17fa95",
+        "type": "entrance",
         "direction": "S",
-        "_id": "100d3af3-20ba-4a7b-b17e-13c58e715c10"
+        "buildingId": "399d0995-42f1-4e72-b874-3767bc17fa95",
+        "number": null,
+        "prefix": null
       }
     },
     {
@@ -1477,11 +1075,13 @@
         ]
       },
       "properties": {
-        "type": "entrance",
+        "_id": "3ff5a849-f1a1-4665-b3a7-e47dcfc2f732",
         "name": "LRC-SW1",
-        "buildingId": "399d0995-42f1-4e72-b874-3767bc17fa95",
+        "type": "entrance",
         "direction": "SW",
-        "_id": "3ff5a849-f1a1-4665-b3a7-e47dcfc2f732"
+        "buildingId": "399d0995-42f1-4e72-b874-3767bc17fa95",
+        "number": null,
+        "prefix": null
       }
     },
     {
@@ -1494,11 +1094,13 @@
         ]
       },
       "properties": {
-        "type": "entrance",
+        "_id": "9228ca83-acdb-4990-b555-a29c722f3f43",
         "name": "LRC-SW2",
-        "buildingId": "399d0995-42f1-4e72-b874-3767bc17fa95",
+        "type": "entrance",
         "direction": "SW",
-        "_id": "9228ca83-acdb-4990-b555-a29c722f3f43"
+        "buildingId": "399d0995-42f1-4e72-b874-3767bc17fa95",
+        "number": null,
+        "prefix": null
       }
     },
     {
@@ -1511,11 +1113,13 @@
         ]
       },
       "properties": {
-        "type": "entrance",
+        "_id": "45567b85-bdde-4e72-888b-8775280938d7",
         "name": "SS-SW1",
-        "buildingId": "11c29f46-e93a-4dc8-94d9-76a0d0c110fd",
+        "type": "entrance",
         "direction": "SW",
-        "_id": "45567b85-bdde-4e72-888b-8775280938d7"
+        "buildingId": "11c29f46-e93a-4dc8-94d9-76a0d0c110fd",
+        "number": null,
+        "prefix": null
       }
     },
     {
@@ -1528,11 +1132,13 @@
         ]
       },
       "properties": {
-        "type": "entrance",
+        "_id": "5e995db6-dcad-4665-8b5c-36528d22d78c",
         "name": "DNR-SW1",
-        "buildingId": "3a2a7f50-ac73-48f5-a19d-9e28e52b1d46",
+        "type": "entrance",
         "direction": "SW",
-        "_id": "5e995db6-dcad-4665-8b5c-36528d22d78c"
+        "buildingId": "3a2a7f50-ac73-48f5-a19d-9e28e52b1d46",
+        "number": null,
+        "prefix": null
       }
     },
     {
@@ -1545,11 +1151,13 @@
         ]
       },
       "properties": {
-        "type": "entrance",
+        "_id": "6a216c28-0a7a-458b-b4db-011157ad5b4f",
         "name": "AOT-S1",
-        "buildingId": "5289457b-9703-4087-aff1-74f9657e1b4c",
+        "type": "entrance",
         "direction": "S",
-        "_id": "6a216c28-0a7a-458b-b4db-011157ad5b4f"
+        "buildingId": "5289457b-9703-4087-aff1-74f9657e1b4c",
+        "number": null,
+        "prefix": null
       }
     },
     {
@@ -1562,11 +1170,13 @@
         ]
       },
       "properties": {
-        "type": "entrance",
+        "_id": "546d4ca6-552f-4ab4-9a84-917b3a99889c",
         "name": "GR-S1",
-        "buildingId": "8d55f5c2-2c8b-4d40-837c-279f960d9426",
+        "type": "entrance",
         "direction": "S",
-        "_id": "546d4ca6-552f-4ab4-9a84-917b3a99889c"
+        "buildingId": "8d55f5c2-2c8b-4d40-837c-279f960d9426",
+        "number": null,
+        "prefix": null
       }
     },
     {
@@ -1579,11 +1189,13 @@
         ]
       },
       "properties": {
-        "type": "entrance",
+        "_id": "2870e758-e297-4e36-9963-2cfa945a9bfa",
         "name": "AT-SW1",
-        "buildingId": "4f38fa33-ba0d-41ed-affe-9d590ca01667",
+        "type": "entrance",
         "direction": "SW",
-        "_id": "2870e758-e297-4e36-9963-2cfa945a9bfa"
+        "buildingId": "4f38fa33-ba0d-41ed-affe-9d590ca01667",
+        "number": null,
+        "prefix": null
       }
     },
     {
@@ -1596,11 +1208,13 @@
         ]
       },
       "properties": {
-        "type": "entrance",
+        "_id": "adddc8df-6eee-48a6-ae57-7d6837cd277c",
         "name": "AT-W1",
-        "buildingId": "4f38fa33-ba0d-41ed-affe-9d590ca01667",
+        "type": "entrance",
         "direction": "W",
-        "_id": "adddc8df-6eee-48a6-ae57-7d6837cd277c"
+        "buildingId": "4f38fa33-ba0d-41ed-affe-9d590ca01667",
+        "number": null,
+        "prefix": null
       }
     },
     {
@@ -1613,11 +1227,13 @@
         ]
       },
       "properties": {
-        "type": "entrance",
+        "_id": "370defa3-f24b-440c-8092-d0ba746a48c2",
         "name": "AT-SE1",
-        "buildingId": "4f38fa33-ba0d-41ed-affe-9d590ca01667",
+        "type": "entrance",
         "direction": "SE",
-        "_id": "370defa3-f24b-440c-8092-d0ba746a48c2"
+        "buildingId": "4f38fa33-ba0d-41ed-affe-9d590ca01667",
+        "number": null,
+        "prefix": null
       }
     },
     {
@@ -1630,11 +1246,13 @@
         ]
       },
       "properties": {
-        "type": "entrance",
+        "_id": "73090266-74cc-495f-9a09-67447cd340d4",
         "name": "PSB-N1",
-        "buildingId": "f467c422-9272-4bfe-8d4b-e9664a82f1c2",
+        "type": "entrance",
         "direction": "N",
-        "_id": "73090266-74cc-495f-9a09-67447cd340d4"
+        "buildingId": "f467c422-9272-4bfe-8d4b-e9664a82f1c2",
+        "number": null,
+        "prefix": null
       }
     },
     {
@@ -1647,11 +1265,13 @@
         ]
       },
       "properties": {
-        "type": "entrance",
+        "_id": "a034c7ec-a373-49b9-84e9-f979aff560d5",
         "name": "PSB-W1",
-        "buildingId": "f467c422-9272-4bfe-8d4b-e9664a82f1c2",
+        "type": "entrance",
         "direction": "W",
-        "_id": "a034c7ec-a373-49b9-84e9-f979aff560d5"
+        "buildingId": "f467c422-9272-4bfe-8d4b-e9664a82f1c2",
+        "number": null,
+        "prefix": null
       }
     },
     {
@@ -1664,11 +1284,13 @@
         ]
       },
       "properties": {
-        "type": "entrance",
+        "_id": "a3226e61-e659-4e21-bedc-627a6868903d",
         "name": "PSB-SE1",
-        "buildingId": "f467c422-9272-4bfe-8d4b-e9664a82f1c2",
+        "type": "entrance",
         "direction": "SE",
-        "_id": "a3226e61-e659-4e21-bedc-627a6868903d"
+        "buildingId": "f467c422-9272-4bfe-8d4b-e9664a82f1c2",
+        "number": null,
+        "prefix": null
       }
     },
     {
@@ -1681,11 +1303,13 @@
         ]
       },
       "properties": {
-        "type": "entrance",
+        "_id": "16b14878-e612-469d-992f-9bf3d3848ee7",
         "name": "TH-S1",
-        "buildingId": "1724f989-4a38-4375-885a-8a762cacf6ff",
+        "type": "entrance",
         "direction": "S",
-        "_id": "16b14878-e612-469d-992f-9bf3d3848ee7"
+        "buildingId": "1724f989-4a38-4375-885a-8a762cacf6ff",
+        "number": null,
+        "prefix": null
       }
     },
     {
@@ -1698,11 +1322,13 @@
         ]
       },
       "properties": {
-        "type": "entrance",
+        "_id": "f8d5af68-3435-4f62-8c70-47291b23dccd",
         "name": "MRH-SE1",
-        "buildingId": "fee67847-929f-4520-8bdc-9a6bff3b467a",
+        "type": "entrance",
         "direction": "SE",
-        "_id": "f8d5af68-3435-4f62-8c70-47291b23dccd"
+        "buildingId": "fee67847-929f-4520-8bdc-9a6bff3b467a",
+        "number": null,
+        "prefix": null
       }
     },
     {
@@ -1715,11 +1341,13 @@
         ]
       },
       "properties": {
-        "type": "entrance",
+        "_id": "ad4e3d66-672a-4828-8aba-f09845f1442b",
         "name": "PE-W1",
-        "buildingId": "bd7d6ba1-19ce-4843-b776-30d4f55532ae",
+        "type": "entrance",
         "direction": "W",
-        "_id": "ad4e3d66-672a-4828-8aba-f09845f1442b"
+        "buildingId": "bd7d6ba1-19ce-4843-b776-30d4f55532ae",
+        "number": null,
+        "prefix": null
       }
     },
     {
@@ -1732,11 +1360,13 @@
         ]
       },
       "properties": {
-        "type": "entrance",
+        "_id": "f70e5801-9b58-45b8-b98d-1a2eeb216924",
         "name": "PE-S1",
-        "buildingId": "bd7d6ba1-19ce-4843-b776-30d4f55532ae",
+        "type": "entrance",
         "direction": "S",
-        "_id": "f70e5801-9b58-45b8-b98d-1a2eeb216924"
+        "buildingId": "bd7d6ba1-19ce-4843-b776-30d4f55532ae",
+        "number": null,
+        "prefix": null
       }
     },
     {
@@ -1749,11 +1379,13 @@
         ]
       },
       "properties": {
-        "type": "entrance",
+        "_id": "04599731-be44-4708-b790-8c255ebac59d",
         "name": "TH-NE1",
-        "buildingId": "1724f989-4a38-4375-885a-8a762cacf6ff",
+        "type": "entrance",
         "direction": "NE",
-        "_id": "04599731-be44-4708-b790-8c255ebac59d"
+        "buildingId": "1724f989-4a38-4375-885a-8a762cacf6ff",
+        "number": null,
+        "prefix": null
       }
     },
     {
@@ -1766,11 +1398,13 @@
         ]
       },
       "properties": {
-        "type": "entrance",
+        "_id": "0eb7737a-ab09-4a34-b227-658ef17cd74d",
         "name": "SU-N1",
-        "buildingId": "492e1b5f-b299-4f55-a63d-b2e02c94c00d",
+        "type": "entrance",
         "direction": "N",
-        "_id": "0eb7737a-ab09-4a34-b227-658ef17cd74d"
+        "buildingId": "492e1b5f-b299-4f55-a63d-b2e02c94c00d",
+        "number": null,
+        "prefix": null
       }
     },
     {
@@ -1783,11 +1417,13 @@
         ]
       },
       "properties": {
-        "type": "entrance",
+        "_id": "96bcbedb-83ff-47ef-bf8f-c130019bdcc7",
         "name": "FH-NW1",
-        "buildingId": "9a2e69fd-1cd6-4b5b-b706-2f63efce50ba",
+        "type": "entrance",
         "direction": "NW",
-        "_id": "96bcbedb-83ff-47ef-bf8f-c130019bdcc7"
+        "buildingId": "9a2e69fd-1cd6-4b5b-b706-2f63efce50ba",
+        "number": null,
+        "prefix": null
       }
     },
     {
@@ -1800,11 +1436,13 @@
         ]
       },
       "properties": {
-        "type": "entrance",
+        "_id": "e4dc3bb0-0e99-4eb9-82f9-9f06f4ecb6a8",
         "name": "CDC-SW1",
-        "buildingId": "aa9deb25-d5db-4210-a11f-0902ae43d434",
+        "type": "entrance",
         "direction": "SW",
-        "_id": "e4dc3bb0-0e99-4eb9-82f9-9f06f4ecb6a8"
+        "buildingId": "aa9deb25-d5db-4210-a11f-0902ae43d434",
+        "number": null,
+        "prefix": null
       }
     },
     {
@@ -1817,11 +1455,13 @@
         ]
       },
       "properties": {
-        "type": "entrance",
+        "_id": "7daf0acf-a766-45a2-bee2-a6ba43704a70",
         "name": "ERT-W1",
-        "buildingId": "2b5c1e00-d87c-4c62-a2ce-c08aaeadbbbe",
+        "type": "entrance",
         "direction": "W",
-        "_id": "7daf0acf-a766-45a2-bee2-a6ba43704a70"
+        "buildingId": "2b5c1e00-d87c-4c62-a2ce-c08aaeadbbbe",
+        "number": null,
+        "prefix": null
       }
     },
     {
@@ -1834,11 +1474,13 @@
         ]
       },
       "properties": {
-        "type": "entrance",
+        "_id": "d7afd0f3-0c15-4717-a416-4723ba47ed50",
         "name": "FR-S1",
-        "buildingId": "3fba758e-d39e-4650-ae49-b687e4ce8eda",
+        "type": "entrance",
         "direction": "S",
-        "_id": "d7afd0f3-0c15-4717-a416-4723ba47ed50"
+        "buildingId": "3fba758e-d39e-4650-ae49-b687e4ce8eda",
+        "number": null,
+        "prefix": null
       }
     },
     {
@@ -1851,11 +1493,13 @@
         ]
       },
       "properties": {
-        "type": "entrance",
+        "_id": "472b77ba-fdf2-4949-86e1-515fd1a03ec8",
         "name": "MAG-NW1",
-        "buildingId": "866a7bd0-75bb-48a8-9abb-868df6884f33",
+        "type": "entrance",
         "direction": "NW",
-        "_id": "472b77ba-fdf2-4949-86e1-515fd1a03ec8"
+        "buildingId": "866a7bd0-75bb-48a8-9abb-868df6884f33",
+        "number": null,
+        "prefix": null
       }
     },
     {
@@ -1868,11 +1512,13 @@
         ]
       },
       "properties": {
-        "type": "entrance",
+        "_id": "25926f6a-db2d-4eae-bdee-7b8ec2793446",
         "name": "WAM-W1",
-        "buildingId": "ea98693a-22bb-46aa-84f1-0ed5677140e7",
+        "type": "entrance",
         "direction": "W",
-        "_id": "25926f6a-db2d-4eae-bdee-7b8ec2793446"
+        "buildingId": "ea98693a-22bb-46aa-84f1-0ed5677140e7",
+        "number": null,
+        "prefix": null
       }
     },
     {
@@ -1885,11 +1531,13 @@
         ]
       },
       "properties": {
-        "type": "entrance",
+        "_id": "693051b9-ac35-4d0f-9528-82fca8894560",
         "name": "WAM-S1",
-        "buildingId": "ea98693a-22bb-46aa-84f1-0ed5677140e7",
+        "type": "entrance",
         "direction": "S",
-        "_id": "693051b9-ac35-4d0f-9528-82fca8894560"
+        "buildingId": "ea98693a-22bb-46aa-84f1-0ed5677140e7",
+        "number": null,
+        "prefix": null
       }
     },
     {
@@ -1902,11 +1550,13 @@
         ]
       },
       "properties": {
-        "type": "entrance",
+        "_id": "2d89f24f-4424-4ad6-b223-b71f26dd7128",
         "name": "FH-S1",
-        "buildingId": "9a2e69fd-1cd6-4b5b-b706-2f63efce50ba",
+        "type": "entrance",
         "direction": "S",
-        "_id": "2d89f24f-4424-4ad6-b223-b71f26dd7128"
+        "buildingId": "9a2e69fd-1cd6-4b5b-b706-2f63efce50ba",
+        "number": null,
+        "prefix": null
       }
     },
     {
@@ -1919,11 +1569,13 @@
         ]
       },
       "properties": {
-        "type": "entrance",
+        "_id": "2e37539d-c483-42ca-9cab-4131d2649137",
         "name": "FH-SE1",
-        "buildingId": "9a2e69fd-1cd6-4b5b-b706-2f63efce50ba",
+        "type": "entrance",
         "direction": "SE",
-        "_id": "2e37539d-c483-42ca-9cab-4131d2649137"
+        "buildingId": "9a2e69fd-1cd6-4b5b-b706-2f63efce50ba",
+        "number": null,
+        "prefix": null
       }
     },
     {
@@ -1936,11 +1588,13 @@
         ]
       },
       "properties": {
-        "type": "entrance",
+        "_id": "3b501a9d-d100-4a44-afe3-201feb50060f",
         "name": "FH-NE1",
-        "buildingId": "9a2e69fd-1cd6-4b5b-b706-2f63efce50ba",
+        "type": "entrance",
         "direction": "NE",
-        "_id": "3b501a9d-d100-4a44-afe3-201feb50060f"
+        "buildingId": "9a2e69fd-1cd6-4b5b-b706-2f63efce50ba",
+        "number": null,
+        "prefix": null
       }
     },
     {
@@ -1953,11 +1607,13 @@
         ]
       },
       "properties": {
-        "type": "entrance",
+        "_id": "b8ca3ba6-5a5b-43db-9163-0d0d9ee21ab7",
         "name": "PE-SE1",
-        "buildingId": "bd7d6ba1-19ce-4843-b776-30d4f55532ae",
+        "type": "entrance",
         "direction": "SE",
-        "_id": "b8ca3ba6-5a5b-43db-9163-0d0d9ee21ab7"
+        "buildingId": "bd7d6ba1-19ce-4843-b776-30d4f55532ae",
+        "number": null,
+        "prefix": null
       }
     },
     {
@@ -1970,11 +1626,13 @@
         ]
       },
       "properties": {
-        "type": "entrance",
+        "_id": "9a79ddba-0378-413c-affe-b59395886bbf",
         "name": "PE-NE1",
-        "buildingId": "bd7d6ba1-19ce-4843-b776-30d4f55532ae",
+        "type": "entrance",
         "direction": "NE",
-        "_id": "9a79ddba-0378-413c-affe-b59395886bbf"
+        "buildingId": "bd7d6ba1-19ce-4843-b776-30d4f55532ae",
+        "number": null,
+        "prefix": null
       }
     },
     {
@@ -1987,11 +1645,13 @@
         ]
       },
       "properties": {
-        "type": "entrance",
+        "_id": "30ecc0c6-7e35-448f-8508-363a0ce27d26",
         "name": "AT-NE1",
-        "buildingId": "4f38fa33-ba0d-41ed-affe-9d590ca01667",
+        "type": "entrance",
         "direction": "NE",
-        "_id": "30ecc0c6-7e35-448f-8508-363a0ce27d26"
+        "buildingId": "4f38fa33-ba0d-41ed-affe-9d590ca01667",
+        "number": null,
+        "prefix": null
       }
     },
     {
@@ -2004,11 +1664,13 @@
         ]
       },
       "properties": {
-        "type": "entrance",
+        "_id": "a463181d-b757-4e40-b0d9-884be476d6a6",
         "name": "AOT-SW1",
-        "buildingId": "78ff7168-9880-4b87-a8c7-6556eac4d30c",
+        "type": "entrance",
         "direction": "SW",
-        "_id": "a463181d-b757-4e40-b0d9-884be476d6a6"
+        "buildingId": "78ff7168-9880-4b87-a8c7-6556eac4d30c",
+        "number": null,
+        "prefix": null
       }
     },
     {
@@ -2021,11 +1683,13 @@
         ]
       },
       "properties": {
-        "type": "entrance",
+        "_id": "bd95e437-0504-4f28-adb2-b8141cc24b81",
         "name": "MRH-SW1",
-        "buildingId": "fee67847-929f-4520-8bdc-9a6bff3b467a",
+        "type": "entrance",
         "direction": "SW",
-        "_id": "bd95e437-0504-4f28-adb2-b8141cc24b81"
+        "buildingId": "fee67847-929f-4520-8bdc-9a6bff3b467a",
+        "number": null,
+        "prefix": null
       }
     },
     {
@@ -2038,11 +1702,13 @@
         ]
       },
       "properties": {
-        "type": "entrance",
+        "_id": "8b412583-d442-4bcb-82b0-f1b2eb43e600",
         "name": "DNR-SE1",
-        "buildingId": "3a2a7f50-ac73-48f5-a19d-9e28e52b1d46",
+        "type": "entrance",
         "direction": "SE",
-        "_id": "8b412583-d442-4bcb-82b0-f1b2eb43e600"
+        "buildingId": "3a2a7f50-ac73-48f5-a19d-9e28e52b1d46",
+        "number": null,
+        "prefix": null
       }
     },
     {
@@ -2055,11 +1721,13 @@
         ]
       },
       "properties": {
-        "type": "entrance",
+        "_id": "3dc34491-5b37-4656-ade5-1c4e987b43a3",
         "name": "DNR-W1",
-        "buildingId": "3a2a7f50-ac73-48f5-a19d-9e28e52b1d46",
+        "type": "entrance",
         "direction": "W",
-        "_id": "3dc34491-5b37-4656-ade5-1c4e987b43a3"
+        "buildingId": "3a2a7f50-ac73-48f5-a19d-9e28e52b1d46",
+        "number": null,
+        "prefix": null
       }
     },
     {
@@ -2072,11 +1740,13 @@
         ]
       },
       "properties": {
-        "type": "entrance",
+        "_id": "fc65a682-9b17-43d8-b6cc-63a0f74856cf",
         "name": "MRH-NW1",
-        "buildingId": "fee67847-929f-4520-8bdc-9a6bff3b467a",
+        "type": "entrance",
         "direction": "NW",
-        "_id": "fc65a682-9b17-43d8-b6cc-63a0f74856cf"
+        "buildingId": "fee67847-929f-4520-8bdc-9a6bff3b467a",
+        "number": null,
+        "prefix": null
       }
     },
     {
@@ -2109,8 +1779,13 @@
         ]
       },
       "properties": {
+        "_id": "8e6c785f-d348-41cb-b370-75257f4c0a93",
         "type": "parking",
-        "_id": "8e6c785f-d348-41cb-b370-75257f4c0a93"
+        "name": null,
+        "number": null,
+        "buildingId": null,
+        "prefix": null,
+        "direction": null
       }
     },
     {
@@ -2159,8 +1834,32 @@
         ]
       },
       "properties": {
+        "_id": "287d255b-5b68-4449-9290-030afc4e878e",
         "type": "parking",
-        "_id": "287d255b-5b68-4449-9290-030afc4e878e"
+        "name": null,
+        "number": null,
+        "buildingId": null,
+        "prefix": null,
+        "direction": null
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -124.198459,
+          40.69817
+        ]
+      },
+      "properties": {
+        "_id": "a8eb76c2-29ce-4e16-82fc-2c095e0bf27b",
+        "name": "PSB-E1",
+        "type": "entrance",
+        "direction": "E",
+        "buildingId": "f467c422-9272-4bfe-8d4b-e9664a82f1c2",
+        "number": null,
+        "prefix": null
       }
     },
     {
@@ -2221,8 +1920,13 @@
         ]
       },
       "properties": {
+        "_id": "e67174d3-2d04-42ed-9ffd-183bc17eaa92",
         "type": "parking",
-        "_id": "e67174d3-2d04-42ed-9ffd-183bc17eaa92"
+        "name": null,
+        "number": null,
+        "buildingId": null,
+        "prefix": null,
+        "direction": null
       }
     },
     {
@@ -2259,8 +1963,13 @@
         ]
       },
       "properties": {
+        "_id": "3078832a-f7b1-4e87-baea-4577f3377bb2",
         "type": "parking",
-        "_id": "3078832a-f7b1-4e87-baea-4577f3377bb2"
+        "name": null,
+        "number": null,
+        "buildingId": null,
+        "prefix": null,
+        "direction": null
       }
     },
     {
@@ -2361,8 +2070,13 @@
         ]
       },
       "properties": {
+        "_id": "0f7f73fc-b385-4a1c-a3fc-7e9c0785b32b",
         "type": "parking",
-        "_id": "0f7f73fc-b385-4a1c-a3fc-7e9c0785b32b"
+        "name": null,
+        "number": null,
+        "buildingId": null,
+        "prefix": null,
+        "direction": null
       }
     },
     {
@@ -2395,8 +2109,13 @@
         ]
       },
       "properties": {
+        "_id": "7a672b3d-110b-45b3-8db6-688789d9c7ad",
         "type": "parking",
-        "_id": "7a672b3d-110b-45b3-8db6-688789d9c7ad"
+        "name": null,
+        "number": null,
+        "buildingId": null,
+        "prefix": null,
+        "direction": null
       }
     },
     {
@@ -2429,8 +2148,13 @@
         ]
       },
       "properties": {
+        "_id": "ffc50cee-bf2b-4bbf-ad85-7cc795de4aae",
         "type": "parking",
-        "_id": "ffc50cee-bf2b-4bbf-ad85-7cc795de4aae"
+        "name": null,
+        "number": null,
+        "buildingId": null,
+        "prefix": null,
+        "direction": null
       }
     },
     {
@@ -2475,8 +2199,13 @@
         ]
       },
       "properties": {
+        "_id": "51cc8c08-ae92-4f56-a4ee-f5290ed21f20",
         "type": "parking",
-        "_id": "51cc8c08-ae92-4f56-a4ee-f5290ed21f20"
+        "name": null,
+        "number": null,
+        "buildingId": null,
+        "prefix": null,
+        "direction": null
       }
     },
     {
@@ -2513,8 +2242,13 @@
         ]
       },
       "properties": {
+        "_id": "e2d40eaf-6d5a-4a7b-b169-9f0bc625ed43",
         "type": "parking",
-        "_id": "e2d40eaf-6d5a-4a7b-b169-9f0bc625ed43"
+        "name": null,
+        "number": null,
+        "buildingId": null,
+        "prefix": null,
+        "direction": null
       }
     },
     {
@@ -2551,8 +2285,13 @@
         ]
       },
       "properties": {
+        "_id": "8dd9d03b-a4d2-400f-810d-af35bb56b79d",
         "type": "parking",
-        "_id": "8dd9d03b-a4d2-400f-810d-af35bb56b79d"
+        "name": null,
+        "number": null,
+        "buildingId": null,
+        "prefix": null,
+        "direction": null
       }
     },
     {
@@ -2609,8 +2348,13 @@
         ]
       },
       "properties": {
+        "_id": "b8dcd2ff-ada4-445b-a901-093577befdbe",
         "type": "parking",
-        "_id": "b8dcd2ff-ada4-445b-a901-093577befdbe"
+        "name": null,
+        "number": null,
+        "buildingId": null,
+        "prefix": null,
+        "direction": null
       }
     },
     {
@@ -2647,8 +2391,13 @@
         ]
       },
       "properties": {
+        "_id": "5eb08809-3677-4c06-8afd-75e1bc6315ce",
         "type": "parking",
-        "_id": "5eb08809-3677-4c06-8afd-75e1bc6315ce"
+        "name": null,
+        "number": null,
+        "buildingId": null,
+        "prefix": null,
+        "direction": null
       }
     },
     {
@@ -2685,8 +2434,13 @@
         ]
       },
       "properties": {
+        "_id": "04086899-6f14-4bb9-87c0-0f7fc335045d",
         "type": "parking",
-        "_id": "04086899-6f14-4bb9-87c0-0f7fc335045d"
+        "name": null,
+        "number": null,
+        "buildingId": null,
+        "prefix": null,
+        "direction": null
       }
     },
     {
@@ -2727,8 +2481,13 @@
         ]
       },
       "properties": {
+        "_id": "3647a460-975c-41f4-bf9d-5765cb5cc190",
         "type": "parking",
-        "_id": "3647a460-975c-41f4-bf9d-5765cb5cc190"
+        "name": null,
+        "number": null,
+        "buildingId": null,
+        "prefix": null,
+        "direction": null
       }
     },
     {
@@ -2769,8 +2528,13 @@
         ]
       },
       "properties": {
+        "_id": "ef7f8ca2-6666-42f6-b773-92139dfb0ab3",
         "type": "parking",
-        "_id": "ef7f8ca2-6666-42f6-b773-92139dfb0ab3"
+        "name": null,
+        "number": null,
+        "buildingId": null,
+        "prefix": null,
+        "direction": null
       }
     },
     {
@@ -2803,8 +2567,13 @@
         ]
       },
       "properties": {
+        "_id": "da4b9825-5713-4dc4-8585-2d41a9314fc6",
         "type": "parking",
-        "_id": "da4b9825-5713-4dc4-8585-2d41a9314fc6"
+        "name": null,
+        "number": null,
+        "buildingId": null,
+        "prefix": null,
+        "direction": null
       }
     },
     {
@@ -2837,8 +2606,13 @@
         ]
       },
       "properties": {
+        "_id": "1e45070f-3472-4721-8fe1-8e5e8a764ca4",
         "type": "parking",
-        "_id": "1e45070f-3472-4721-8fe1-8e5e8a764ca4"
+        "name": null,
+        "number": null,
+        "buildingId": null,
+        "prefix": null,
+        "direction": null
       }
     },
     {
@@ -2871,8 +2645,13 @@
         ]
       },
       "properties": {
+        "_id": "30230341-a26a-4a9d-84ca-d0cc86bf1e97",
         "type": "parking",
-        "_id": "30230341-a26a-4a9d-84ca-d0cc86bf1e97"
+        "name": null,
+        "number": null,
+        "buildingId": null,
+        "prefix": null,
+        "direction": null
       }
     },
     {
@@ -2885,28 +2664,13 @@
         ]
       },
       "properties": {
-        "type": "entrance",
+        "_id": "033e0683-9ad7-4730-a08b-5a3108d0d9fa",
         "name": "PSB-NE1",
-        "buildingId": "f467c422-9272-4bfe-8d4b-e9664a82f1c2",
-        "direction": "NE",
-        "_id": "033e0683-9ad7-4730-a08b-5a3108d0d9fa"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -124.198459,
-          40.69817
-        ]
-      },
-      "properties": {
         "type": "entrance",
-        "name": "PSB-E1",
+        "direction": "NE",
         "buildingId": "f467c422-9272-4bfe-8d4b-e9664a82f1c2",
-        "direction": "E",
-        "_id": "a8eb76c2-29ce-4e16-82fc-2c095e0bf27b"
+        "number": null,
+        "prefix": null
       }
     },
     {
@@ -2919,11 +2683,13 @@
         ]
       },
       "properties": {
-        "type": "entrance",
+        "_id": "e752f198-51d6-4c1d-8480-a728824b0ca8",
         "name": "LRC-E1",
-        "buildingId": "399d0995-42f1-4e72-b874-3767bc17fa95",
+        "type": "entrance",
         "direction": "E",
-        "_id": "e752f198-51d6-4c1d-8480-a728824b0ca8"
+        "buildingId": "399d0995-42f1-4e72-b874-3767bc17fa95",
+        "number": null,
+        "prefix": null
       }
     },
     {
@@ -2936,43 +2702,827 @@
         ]
       },
       "properties": {
-        "type": "entrance",
+        "_id": "7f660d74-8b32-492f-a041-dbe3abb77bea",
         "name": "SS-N1",
-        "buildingId": "11c29f46-e93a-4dc8-94d9-76a0d0c110fd",
-        "direction": "N",
-        "_id": "7f660d74-8b32-492f-a041-dbe3abb77bea"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -124.198783,
-          40.698741
-        ]
-      },
-      "properties": {
-        "type": "building",
-        "name": "Building",
-        "_id": "c9093e6b-a4e1-4468-9ecc-1d264deefa6f"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -124.198783,
-          40.698741
-        ]
-      },
-      "properties": {
         "type": "entrance",
+        "direction": "N",
+        "buildingId": "11c29f46-e93a-4dc8-94d9-76a0d0c110fd",
+        "number": null,
+        "prefix": null
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -124.198783,
+          40.698741
+        ]
+      },
+      "properties": {
+        "_id": "a174d265-c8b1-4b36-a88b-198445b8562b",
         "name": "SAM-S1",
-        "buildingId": "2397aa97-6e17-4f71-ac7a-f38fd3482d3d",
+        "type": "entrance",
         "direction": "S",
-        "_id": "a174d265-c8b1-4b36-a88b-198445b8562b"
+        "buildingId": "2397aa97-6e17-4f71-ac7a-f38fd3482d3d",
+        "number": null,
+        "prefix": null
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -124.197317,
+              40.698167
+            ],
+            [
+              -124.19674,
+              40.69823
+            ],
+            [
+              -124.196732,
+              40.698174
+            ],
+            [
+              -124.196552,
+              40.698195
+            ],
+            [
+              -124.196563,
+              40.698243
+            ],
+            [
+              -124.196509,
+              40.698252
+            ],
+            [
+              -124.196512,
+              40.698279
+            ],
+            [
+              -124.196333,
+              40.6983
+            ],
+            [
+              -124.196369,
+              40.698665
+            ],
+            [
+              -124.197386,
+              40.698569
+            ],
+            [
+              -124.197317,
+              40.698167
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "_id": "399d0995-42f1-4e72-b874-3767bc17fa95",
+        "name": "Learning Resource Center",
+        "type": "building",
+        "number": null,
+        "prefix": "LRC",
+        "direction": null,
+        "buildingId": null
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -124.197027,
+              40.698737
+            ],
+            [
+              -124.196775,
+              40.698761
+            ],
+            [
+              -124.196794,
+              40.698877
+            ],
+            [
+              -124.196416,
+              40.698913
+            ],
+            [
+              -124.196513,
+              40.6995
+            ],
+            [
+              -124.19677,
+              40.699475
+            ],
+            [
+              -124.196778,
+              40.699516
+            ],
+            [
+              -124.19763,
+              40.699433
+            ],
+            [
+              -124.197569,
+              40.699057
+            ],
+            [
+              -124.197502,
+              40.699061
+            ],
+            [
+              -124.197448,
+              40.698734
+            ],
+            [
+              -124.197111,
+              40.698766
+            ],
+            [
+              -124.197177,
+              40.699155
+            ],
+            [
+              -124.197034,
+              40.699172
+            ],
+            [
+              -124.196986,
+              40.698896
+            ],
+            [
+              -124.197053,
+              40.698889
+            ],
+            [
+              -124.197027,
+              40.698737
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "_id": "4f38fa33-ba0d-41ed-affe-9d590ca01667",
+        "name": "Applied Technology",
+        "type": "building",
+        "number": null,
+        "prefix": "AT",
+        "direction": null,
+        "buildingId": null
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -124.198294,
+              40.698369
+            ],
+            [
+              -124.198279,
+              40.6984
+            ],
+            [
+              -124.198227,
+              40.698386
+            ],
+            [
+              -124.198175,
+              40.698491
+            ],
+            [
+              -124.198141,
+              40.698474
+            ],
+            [
+              -124.197922,
+              40.698929
+            ],
+            [
+              -124.198178,
+              40.698998
+            ],
+            [
+              -124.198193,
+              40.698963
+            ],
+            [
+              -124.198264,
+              40.698985
+            ],
+            [
+              -124.198299,
+              40.698912
+            ],
+            [
+              -124.198325,
+              40.698919
+            ],
+            [
+              -124.198396,
+              40.698764
+            ],
+            [
+              -124.198448,
+              40.698777
+            ],
+            [
+              -124.198506,
+              40.698658
+            ],
+            [
+              -124.19846,
+              40.698643
+            ],
+            [
+              -124.198497,
+              40.698569
+            ],
+            [
+              -124.198471,
+              40.698556
+            ],
+            [
+              -124.198505,
+              40.698496
+            ],
+            [
+              -124.198463,
+              40.698484
+            ],
+            [
+              -124.19848,
+              40.698451
+            ],
+            [
+              -124.198426,
+              40.698437
+            ],
+            [
+              -124.19844,
+              40.698412
+            ],
+            [
+              -124.198294,
+              40.698369
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "_id": "f6624078-160e-45c3-9530-b135157fc128",
+        "name": "Humanities",
+        "type": "building",
+        "number": null,
+        "prefix": "HU",
+        "direction": null,
+        "buildingId": null
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -124.195589,
+              40.697862
+            ],
+            [
+              -124.194704,
+              40.697934
+            ],
+            [
+              -124.194631,
+              40.697422
+            ],
+            [
+              -124.19474,
+              40.697413
+            ],
+            [
+              -124.194726,
+              40.697323
+            ],
+            [
+              -124.194856,
+              40.697311
+            ],
+            [
+              -124.194815,
+              40.697025
+            ],
+            [
+              -124.195263,
+              40.696988
+            ],
+            [
+              -124.195298,
+              40.697246
+            ],
+            [
+              -124.195384,
+              40.69724
+            ],
+            [
+              -124.1954,
+              40.69736
+            ],
+            [
+              -124.195512,
+              40.697354
+            ],
+            [
+              -124.195589,
+              40.697862
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "_id": "bd7d6ba1-19ce-4843-b776-30d4f55532ae",
+        "name": "Physical Education",
+        "type": "building",
+        "number": null,
+        "prefix": "PE",
+        "direction": null,
+        "buildingId": null
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -124.194215,
+              40.697901
+            ],
+            [
+              -124.194052,
+              40.69792
+            ],
+            [
+              -124.194029,
+              40.69779
+            ],
+            [
+              -124.194009,
+              40.697796
+            ],
+            [
+              -124.19396,
+              40.697534
+            ],
+            [
+              -124.193857,
+              40.697546
+            ],
+            [
+              -124.193811,
+              40.697301
+            ],
+            [
+              -124.193985,
+              40.697282
+            ],
+            [
+              -124.194008,
+              40.697403
+            ],
+            [
+              -124.194164,
+              40.697387
+            ],
+            [
+              -124.194189,
+              40.697521
+            ],
+            [
+              -124.194147,
+              40.697536
+            ],
+            [
+              -124.194215,
+              40.697901
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "_id": "3864dd2c-5544-4f0f-99c3-be9dcc4edd9d",
+        "name": "Floyd Bettiga Art Gallery",
+        "type": "building",
+        "number": "100",
+        "prefix": "CAC",
+        "direction": null,
+        "buildingId": null
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -124.193944,
+              40.697974
+            ],
+            [
+              -124.193995,
+              40.697906
+            ],
+            [
+              -124.193908,
+              40.697872
+            ],
+            [
+              -124.193927,
+              40.697848
+            ],
+            [
+              -124.193579,
+              40.697705
+            ],
+            [
+              -124.193514,
+              40.697799
+            ],
+            [
+              -124.193944,
+              40.697974
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "_id": "99d28d2c-a186-47fa-9043-5c69689eb8e9",
+        "name": "Creative Arts Office",
+        "type": "building",
+        "number": "400",
+        "prefix": "CAC",
+        "direction": null,
+        "buildingId": null
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -124.193493,
+              40.697789
+            ],
+            [
+              -124.193554,
+              40.697698
+            ],
+            [
+              -124.193215,
+              40.697572
+            ],
+            [
+              -124.193119,
+              40.697649
+            ],
+            [
+              -124.193493,
+              40.697789
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "_id": "cb2d4c54-0044-482d-82b6-475d980f53c6",
+        "name": "Creative Artss office 2",
+        "type": "building",
+        "number": "500",
+        "prefix": "CAC",
+        "direction": null,
+        "buildingId": null
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -124.198685,
+              40.699121
+            ],
+            [
+              -124.198398,
+              40.699038
+            ],
+            [
+              -124.198346,
+              40.699153
+            ],
+            [
+              -124.198096,
+              40.699082
+            ],
+            [
+              -124.198019,
+              40.699239
+            ],
+            [
+              -124.198421,
+              40.69935
+            ],
+            [
+              -124.198366,
+              40.699462
+            ],
+            [
+              -124.198573,
+              40.699521
+            ],
+            [
+              -124.198617,
+              40.699431
+            ],
+            [
+              -124.198678,
+              40.699448
+            ],
+            [
+              -124.198802,
+              40.699188
+            ],
+            [
+              -124.198671,
+              40.699152
+            ],
+            [
+              -124.198685,
+              40.699121
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "_id": "492e1b5f-b299-4f55-a63d-b2e02c94c00d",
+        "name": "CR Cafe",
+        "type": "building",
+        "number": null,
+        "prefix": "CAF",
+        "direction": null,
+        "buildingId": null
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -124.193762,
+              40.697597
+            ],
+            [
+              -124.193672,
+              40.697627
+            ],
+            [
+              -124.193465,
+              40.69762
+            ],
+            [
+              -124.193447,
+              40.697563
+            ],
+            [
+              -124.193664,
+              40.69749
+            ],
+            [
+              -124.193736,
+              40.697499
+            ],
+            [
+              -124.193762,
+              40.697597
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "_id": "242fdcbf-640a-475c-adcd-12ef9d95aecd",
+        "name": "Creative Arts Theater",
+        "type": "building",
+        "number": "300",
+        "prefix": "CAC",
+        "direction": null,
+        "buildingId": null
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -124.193737,
+              40.697422
+            ],
+            [
+              -124.193004,
+              40.69761
+            ],
+            [
+              -124.192949,
+              40.697483
+            ],
+            [
+              -124.193684,
+              40.697297
+            ],
+            [
+              -124.193737,
+              40.697422
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "_id": "d11815f5-478f-46ad-8b8e-3bebfdf1e703",
+        "name": "Creative Arts",
+        "type": "building",
+        "number": "200",
+        "prefix": "CAC",
+        "direction": null,
+        "buildingId": null
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -124.191696,
+              40.697057
+            ],
+            [
+              -124.191585,
+              40.697073
+            ],
+            [
+              -124.191748,
+              40.697771
+            ],
+            [
+              -124.192172,
+              40.697714
+            ],
+            [
+              -124.192129,
+              40.697523
+            ],
+            [
+              -124.191818,
+              40.697565
+            ],
+            [
+              -124.191696,
+              40.697057
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "_id": "ea98693a-22bb-46aa-84f1-0ed5677140e7",
+        "name": "Warehouse and Mailroom",
+        "type": "building",
+        "number": null,
+        "prefix": "WH",
+        "direction": null,
+        "buildingId": null
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -124.192933,
+              40.696573
+            ],
+            [
+              -124.19294,
+              40.69662
+            ],
+            [
+              -124.192602,
+              40.696633
+            ],
+            [
+              -124.192585,
+              40.696391
+            ],
+            [
+              -124.192691,
+              40.696387
+            ],
+            [
+              -124.192674,
+              40.696141
+            ],
+            [
+              -124.192901,
+              40.696134
+            ],
+            [
+              -124.19292,
+              40.696427
+            ],
+            [
+              -124.1931,
+              40.696425
+            ],
+            [
+              -124.193113,
+              40.696565
+            ],
+            [
+              -124.192933,
+              40.696573
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "_id": "2b5c1e00-d87c-4c62-a2ce-c08aaeadbbbe",
+        "name": "Administration of Justice",
+        "type": "building",
+        "number": null,
+        "prefix": "AJ",
+        "direction": null,
+        "buildingId": null
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -124.195248,
+              40.695436
+            ],
+            [
+              -124.195267,
+              40.694981
+            ],
+            [
+              -124.193969,
+              40.694921
+            ],
+            [
+              -124.193947,
+              40.695387
+            ],
+            [
+              -124.195248,
+              40.695436
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "_id": "0a980f10-82d1-4c61-a7d8-a37dd56825aa",
+        "name": "Track",
+        "type": "building",
+        "prefix": "TR",
+        "number": null,
+        "buildingId": null,
+        "direction": null
       }
     }
   ]
