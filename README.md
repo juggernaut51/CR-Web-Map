@@ -123,3 +123,33 @@ described in **Seeding** above.
 The admin editor's "Download GeoJSON" button downloads two files, `features.json` and
 `walkways.json`, each shaped exactly like the corresponding file in `data/`. The browser
 may ask once to allow multiple downloads from the page — allow it so both files save.
+
+## Tests
+
+`npm test` runs a Playwright suite (`tests/`) that drives the real app — both pages, in a
+real browser — against a local Postgres database, replaying the checks that were done by
+hand after each round of fixes (auth redirects, the admin draw/edit/delete tools, routing
+distances, bug reports, XSS escaping, and more).
+
+```
+npm ci
+npx playwright install chromium   # once per machine
+npm test
+```
+
+- The tests never touch the app's own `POSTGRES_*` variables or the app's database.
+  They read their own `TEST_POSTGRES_HOST` (default `localhost`), `TEST_POSTGRES_PORT`
+  (default `5432`), `TEST_POSTGRES_USER` and `TEST_POSTGRES_PASS`, and always use a
+  database named `crmap_test`, which each spec file drops and recreates from scratch
+  before seeding it from `data/*.json`. The Postgres user named by `TEST_POSTGRES_USER`
+  needs the `CREATEDB` privilege for this.
+- The suite refuses to run at all unless `TEST_POSTGRES_HOST` resolves to `localhost`,
+  `127.0.0.1` or `::1` — it will not run against a remote or production database.
+- The map libraries the pages load from unpkg (Leaflet, Leaflet.draw, Turf, and
+  leaflet-path-drag) are served from `node_modules` instead during tests, and every
+  other external host (map tiles, fonts, the campus logo) is answered locally too, so
+  the suite needs no internet access and `npm ci` does not download a browser — only
+  `npx playwright install chromium` does, and only needs to run once per machine.
+- Tests run with a single worker, in the order the spec files are listed, since each
+  spec file's tests share one freshly seeded database and one `node server.js` instance
+  for that file.

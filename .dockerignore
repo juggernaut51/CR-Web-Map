@@ -4,3 +4,7 @@ npm-debug.log
 *.pem
 .git
 .gitignore
+test-results
+playwright-report
+playwright/.cache
+tests
